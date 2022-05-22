@@ -1,0 +1,8 @@
+rabbitmq:
+  host: 152.67.197.65
+  port: 5672
+  username: sky114z
+  password: na6080su12!@
+  logExchange: log-exchange
+  logQueue: log-queue
+  routingKey: log-queue

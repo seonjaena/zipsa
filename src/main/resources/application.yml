@@ -1,0 +1,106 @@
+
+spring:
+
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+
+  devtools:
+    restart:
+      enabled: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  config: classpath:logback.xml
+
+local:
+  win:
+    dir-prefix: C:/Users/sky11/zipsa-files
+  linux:
+    dir-prefix: /root/zipsa-files
+  mac:
+    dir-prefix: /Users/naseonjae/zipsa-files
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://211.169.248.236:3306/ZIPSA_DEV?useSSL=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
+    username: root
+    password: Na6080su12!@
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA442EBW2WIV6SWMBV
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: seonjaena
+      dir-prefix: dev/jwt-test
+    stack:
+      auto: false
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://211.169.248.236:3306/ZIPSA_PROD?useSSL=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
+    username: root
+    password: Na6080su12!@
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA442EBW2WIV6SWMBV
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: seonjaena
+      dir-prefix: prod/jwt-test
+    stack:
+      auto: false
