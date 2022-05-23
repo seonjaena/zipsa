@@ -1,5 +1,6 @@
 package com.project.zipsa.entity;
 
+import com.project.zipsa.entity.common.AuditUser;
 import com.project.zipsa.entity.enums.USER_ROLE;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Users {
+public class Users extends AuditUser {
 
     @Id
     @Column(name = "USER_IDX")
