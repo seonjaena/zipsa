@@ -2,6 +2,9 @@ package com.project.zipsa.entity;
 
 import com.project.zipsa.entity.Users;
 import com.project.zipsa.entity.common.AuditUser;
+import com.project.zipsa.entity.enums.ROOM_CONTRACT_TYPE;
+import com.project.zipsa.entity.enums.ROOM_TYPE;
+import com.project.zipsa.entity.enums.USER_ROLE;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +21,16 @@ import java.time.LocalDate;
 public class Room extends AuditUser {
 
     @Id
-    @Column(name = "ROOD_IDX")
+    @Column(name = "ROOM_IDX")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomIdx;
 
     @Column(name = "ROOM_NUMBER")
     private Integer roomNumber;
 
-    @Column(name = "ROOM_CONTRACT_TYPE", columnDefinition = "TINYINT(1)")
-    private Short roomContractType;
+    @Column(name = "ROOM_CONTRACT_TYPE")
+    @Convert(converter = ROOM_CONTRACT_TYPE.Converter.class)
+    private ROOM_CONTRACT_TYPE roomContractType;
 
     @Column(name = "ROOM_PRICE")
     private Integer roomPrice;
@@ -35,7 +39,8 @@ public class Room extends AuditUser {
     private Integer roomDeposit;
 
     @Column(name = "ROOM_TYPE")
-    private Short roomType;
+    @Convert(converter = ROOM_TYPE.Converter.class)
+    private ROOM_TYPE roomType;
 
     @Column(name = "IS_EMPTY")
     private Boolean isEmpty;

@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 public class AuditDateTime {
 
     @CreatedDate
-    @Column(name = "create_datetime", updatable = false)
+    @Column(name = "CREATE_DATETIME", updatable = false)
     private LocalDateTime createDatetime;
 
     @LastModifiedDate
-    @Column(name = "update_datetime")
+    @Column(name = "UPDATE_DATETIME")
     private LocalDateTime updateDatetime;
 
 }

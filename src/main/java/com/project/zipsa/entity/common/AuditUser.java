@@ -15,11 +15,11 @@ import javax.persistence.MappedSuperclass;
 public class AuditUser extends AuditDateTime {
 
     @CreatedBy
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "CREATED_BY", updatable = false)
     private String createdBy;
 
     @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
+    @Column(name = "UPDATED_BY")
+    private String updatedBy;
 
 }
