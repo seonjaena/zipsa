@@ -34,10 +34,10 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mysql://211.169.248.236:3306/ZIPSA_DEV?useSSL=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: root
-    password: Na6080su12!@
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
+    username: admin
+    password: Na6080su12!!
+    driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -74,15 +74,15 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mysql://211.169.248.236:3306/ZIPSA_PROD?useSSL=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: root
-    password: Na6080su12!@
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_PROD?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
+    username: admin
+    password: Na6080su12!!
+    driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
