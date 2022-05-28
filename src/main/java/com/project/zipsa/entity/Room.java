@@ -3,6 +3,7 @@ package com.project.zipsa.entity;
 import com.project.zipsa.entity.Users;
 import com.project.zipsa.entity.common.AuditUser;
 import com.project.zipsa.entity.enums.ROOM_CONTRACT_TYPE;
+import com.project.zipsa.entity.enums.ROOM_STATUS;
 import com.project.zipsa.entity.enums.ROOM_TYPE;
 import com.project.zipsa.entity.enums.USER_ROLE;
 import lombok.AccessLevel;
@@ -42,8 +43,9 @@ public class Room extends AuditUser {
     @Convert(converter = ROOM_TYPE.Converter.class)
     private ROOM_TYPE roomType;
 
-    @Column(name = "IS_EMPTY")
-    private Boolean isEmpty;
+    @Column(name = "ROOM_STATUS")
+    @Convert(converter = ROOM_STATUS.Converter.class)
+    private ROOM_STATUS roomStatus;
 
     @Column(name = "PAY_DATE")
     private String payDate;

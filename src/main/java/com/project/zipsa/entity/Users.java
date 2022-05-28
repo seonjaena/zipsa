@@ -1,20 +1,22 @@
 package com.project.zipsa.entity;
 
-import com.project.zipsa.entity.common.AuditUser;
+import com.project.zipsa.entity.common.AuditDateTime;
 import com.project.zipsa.entity.enums.USER_ROLE;
+import com.project.zipsa.entity.enums.USER_STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "USERS")
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Users extends AuditUser {
+public class Users extends AuditDateTime {
 
     @Id
     @Column(name = "USER_IDX")
@@ -37,7 +39,26 @@ public class Users extends AuditUser {
     @Convert(converter = USER_ROLE.Converter.class)
     private USER_ROLE userRole;
 
-    @Column(name = "IS_DELETED")
-    private Boolean isDeleted;
+    @Column(name = "USER_STATUS")
+    @Convert(converter = USER_STATUS.Converter.class)
+    private USER_STATUS userStatus;
+
+    @Column(name = "USER_PROFILE_IMAGE")
+    private String userProfileImage;
+
+    @Column(name = "USER_BIRTH")
+    private LocalDate userBirth;
+
+    @Column(name = "IS_ALERT")
+    private Boolean isAlert;
+
+    @Column(name = "IS_MARKETING")
+    private Boolean isMarketing;
+
+    @Column(name = "IS_CHANGE_PW_REQUIRED")
+    private Boolean isChangePwRequired;
+
+    @Column(name = "USER_PHONE")
+    private String userPhone;
 
 }

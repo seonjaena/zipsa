@@ -1,9 +1,8 @@
 package com.project.zipsa.service;
 
 import com.project.zipsa.entity.Users;
+import com.project.zipsa.entity.enums.USER_STATUS;
 import com.project.zipsa.entity.security.AuthUser;
-import com.project.zipsa.exception.custom.UnAuthenticatedException;
-import com.project.zipsa.exception.custom.UserNotFoundException;
 import com.project.zipsa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        Users users = userRepository.findByUserNameAndIsDeletedFalse(userId).orElseThrow(() -> new UsernameNotFoundException("계정을 찾을 수 없습니다."));
+        Users users = userRepository.findByUserNameAndUserStatus(userId, USER_STATUS.NORMAL).orElseThrow(() -> new UsernameNotFoundException("계정을 찾을 수 없습니다."));
 
         Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(users.getUserRole().getText()));
