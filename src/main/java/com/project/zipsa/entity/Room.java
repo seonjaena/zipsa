@@ -57,7 +57,7 @@ public class Room extends AuditUser {
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_MASTER")
-    private Users roomMaster;
+    @JoinColumn(name = "BUILDING_IDX")
+    private Building building;
 
 }

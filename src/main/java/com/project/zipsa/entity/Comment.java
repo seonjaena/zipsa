@@ -30,4 +30,8 @@ public class Comment {
     @Column(name = "COMMENT_CONTENT", columnDefinition = "MEDIUMTEXT")
     private String commentContent;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WRITER_IDX")
+    private Users writer;
+
 }

@@ -1,4 +1,4 @@
-package com.project.zipsa.dto;
+package com.project.zipsa.dto.auth;
 
 import lombok.Builder;
 import lombok.Getter;

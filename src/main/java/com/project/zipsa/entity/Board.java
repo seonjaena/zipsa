@@ -22,8 +22,8 @@ public class Board extends AuditUser {
     private Long boardIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_MASTER_IDX")
-    private Users roomMaster;
+    @JoinColumn(name = "BUILDING_IDX")
+    private Building building;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_IDX")

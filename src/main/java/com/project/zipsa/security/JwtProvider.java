@@ -1,6 +1,6 @@
 package com.project.zipsa.security;
 
-import com.project.zipsa.dto.TokenDto;
+import com.project.zipsa.dto.auth.TokenDto;
 import com.project.zipsa.exception.custom.UnAuthenticatedException;
 import com.project.zipsa.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;

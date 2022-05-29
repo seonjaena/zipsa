@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        Users users = userRepository.findByUserNameAndUserStatus(userId, USER_STATUS.NORMAL).orElseThrow(() -> new UsernameNotFoundException("계정을 찾을 수 없습니다."));
+        Users users = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL).orElseThrow(() -> new UsernameNotFoundException("계정을 찾을 수 없습니다."));
 
         Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(users.getUserRole().getText()));

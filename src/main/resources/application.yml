@@ -15,6 +15,11 @@ spring:
       matching-strategy: ant_path_matcher
 
 logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
   config: classpath:logback.xml
 
 local:
