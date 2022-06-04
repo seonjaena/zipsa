@@ -11,7 +11,7 @@ public class TestService {
 
     private final TestRepository testRepository;
 
-    public void createTest(final Test test) {
+    public void createTest(Test test) {
         testRepository.save(test);
     }
 
