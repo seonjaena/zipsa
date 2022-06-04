@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/test/test").permitAll()
                 .antMatchers("/exception/**").permitAll()
-                .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/login", "/api/user/join", "/api/user/phone").permitAll()
                 .antMatchers("/api/log/**", "/log/**").permitAll()
                 .antMatchers("/api/healthcheck").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")

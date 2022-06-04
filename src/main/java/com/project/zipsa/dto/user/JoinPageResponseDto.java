@@ -1,4 +1,4 @@
-package com.project.zipsa.dto;
+package com.project.zipsa.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class GeneralResponseDto<T, E> {
+@NoArgsConstructor
+public class JoinPageResponseDto {
 
-    private T status;
-    private E detail;
+    private String userId;
+    private String userNickname;
 
 }

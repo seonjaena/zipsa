@@ -1,5 +1,6 @@
 package com.project.zipsa.entity;
 
+import com.project.zipsa.dto.user.JoinRequestDto;
 import com.project.zipsa.entity.common.AuditDateTime;
 import com.project.zipsa.entity.enums.USER_ROLE;
 import com.project.zipsa.entity.enums.USER_STATUS;
@@ -52,13 +53,35 @@ public class Users extends AuditDateTime {
     @Column(name = "IS_ALERT")
     private Boolean isAlert;
 
-    @Column(name = "IS_MARKETING")
-    private Boolean isMarketing;
+    @Column(name = "IS_MARKETING_SMS")
+    private Boolean isMarketingSMS;
+
+    @Column(name = "IS_MARKETING_EMAIL")
+    private Boolean isMarketingEmail;
 
     @Column(name = "IS_CHANGE_PW_REQUIRED")
     private Boolean isChangePwRequired;
 
     @Column(name = "USER_PHONE")
     private String userPhone;
+
+    public Users(JoinRequestDto joinRequestDto) {
+        this.userId = joinRequestDto.getUserId();
+        this.userPw = joinRequestDto.getUserPw();
+        this.userName = joinRequestDto.getUserName();
+        this.userNickname = joinRequestDto.getUserNickname();
+        this.userBirth = joinRequestDto.getUserBirth();
+        this.isAlert = joinRequestDto.getIsAlert();
+        this.isMarketingSMS = joinRequestDto.getIsMarketingSMS();
+        this.isMarketingEmail = joinRequestDto.getIsMarketingEmail();
+        this.userPhone = joinRequestDto.getUserPhone();
+        this.isChangePwRequired = false;
+        this.userRole = USER_ROLE.USER;
+        this.userStatus = USER_STATUS.NORMAL;
+    }
+
+    public static Users from(JoinRequestDto joinRequestDto) {
+        return new Users(joinRequestDto);
+    }
 
 }
