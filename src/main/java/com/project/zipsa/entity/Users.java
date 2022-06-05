@@ -84,4 +84,8 @@ public class Users extends AuditDateTime {
         return new Users(joinRequestDto);
     }
 
+    public void changePw(String userPw) {
+        this.userPw = userPw;
+    }
+
 }

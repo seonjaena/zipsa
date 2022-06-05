@@ -8,6 +8,7 @@ public enum GENERAL_FAIL_DETAIL {
     DUPLICATE_PHONE,
     BAD_TYPE_PHONE,
     BAD_DEVICE_CODE,
+    NO_DATA,
     UNKNOWN,
     NULL;
 

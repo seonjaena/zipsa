@@ -4,8 +4,7 @@ import com.project.zipsa.dto.auth.ResponseLoginDto;
 import com.project.zipsa.dto.auth.TokenDto;
 import com.project.zipsa.dto.enums.GENERAL_FAIL_DETAIL;
 import com.project.zipsa.dto.enums.PHONE_CHECK_TYPE;
-import com.project.zipsa.dto.user.JoinPageResponseDto;
-import com.project.zipsa.dto.user.JoinRequestDto;
+import com.project.zipsa.dto.user.*;
 import com.project.zipsa.entity.CheckCode;
 import com.project.zipsa.entity.RefreshToken;
 import com.project.zipsa.entity.Users;
@@ -91,6 +90,30 @@ public class UserService {
         if(!isValid) {
             throw new BadValidDeviceCodeException(GENERAL_FAIL_DETAIL.BAD_DEVICE_CODE.name());
         }
+    }
+
+    public String findId(FindIdRequestDto findIdRequestDto) {
+        validateUserPhone(findIdRequestDto.getUserPhone());
+        Users user = userRepository.findByUserNameAndUserStatusAndUserBirthAndUserPhone(
+                                                        findIdRequestDto.getUserName(), USER_STATUS.NORMAL,
+                                                        findIdRequestDto.getUserBirth(), findIdRequestDto.getUserPhone())
+                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+        return user.getUserId();
+    }
+
+    public void findPw(FindPwRequestDto findPwRequestDto) {
+        validateUserPhone(findPwRequestDto.getUserPhone());
+        userRepository.findByUserNameAndUserStatusAndUserBirthAndUserPhoneAndUserId(
+                        findPwRequestDto.getUserName(), USER_STATUS.NORMAL, findPwRequestDto.getUserBirth(),
+                        findPwRequestDto.getUserPhone(), findPwRequestDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+    }
+
+    @Transactional
+    public void changePw(ChangePwRequestDto changePwRequestDto) {
+        Users user = userRepository.findByUserIdAndUserStatus(changePwRequestDto.getUserId(), USER_STATUS.NORMAL)
+                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+        user.changePw(passwordEncoder.encode(changePwRequestDto.getUserPw()));
     }
 
     private void checkUserPhoneDuplicate(String phone) {

@@ -61,9 +61,9 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String userNotFoundException(UserNotFoundException e) {
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_FAIL_DETAIL> userNotFoundException(UserNotFoundException e) {
         log.error("message = {}", e.getMessage());
-        return e.getMessage();
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, GENERAL_FAIL_DETAIL.NO_DATA);
     }
 
     @ExceptionHandler(Exception.class)

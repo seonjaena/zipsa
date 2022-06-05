@@ -6,14 +6,12 @@ import com.project.zipsa.dto.auth.ResponseLoginDto;
 import com.project.zipsa.dto.enums.GENERAL_STATUS_ENUM;
 import com.project.zipsa.dto.enums.GENERAL_SUCCESS_DETAIL;
 import com.project.zipsa.dto.enums.PHONE_CHECK_TYPE;
-import com.project.zipsa.dto.user.JoinPageResponseDto;
-import com.project.zipsa.dto.user.JoinRequestDto;
+import com.project.zipsa.dto.user.*;
 import com.project.zipsa.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -51,6 +49,23 @@ public class UserController {
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> checkPhoneCode(@RequestParam(name = "userPhone") String userPhone,
                                                                                           @RequestParam(name = "code") String code) {
         userService.checkPhoneCode(userPhone, code);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
+    @PostMapping(value = "/find/id")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> findId(@RequestBody FindIdRequestDto findIdRequestDto) {
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.findId(findIdRequestDto));
+    }
+
+    @PostMapping(value = "/find/pw")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> findPw(@RequestBody FindPwRequestDto findPwRequestDto) {
+        userService.findPw(findPwRequestDto);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
+    @PatchMapping(value = "/pw")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePw(@RequestBody ChangePwRequestDto changePwRequestDto) {
+        userService.changePw(changePwRequestDto);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
