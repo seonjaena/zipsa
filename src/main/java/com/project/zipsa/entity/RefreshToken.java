@@ -14,15 +14,14 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long refreshTokenIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REFRESH_TOKEN_KEY")
-    private Users refreshTokenKey;
+    @Column(name = "REFRESH_TOKEN_KEY")
+    private String refreshTokenKey;
 
     @Column(name = "REFRESH_TOKEN_VALUE")
     private String refreshTokenValue;
 
     @Builder
-    public RefreshToken(Users refreshTokenKey, String refreshTokenValue) {
+    public RefreshToken(String refreshTokenKey, String refreshTokenValue) {
         this.refreshTokenKey = refreshTokenKey;
         this.refreshTokenValue = refreshTokenValue;
     }

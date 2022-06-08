@@ -38,6 +38,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
+    @Transactional
     public ResponseLoginDto login(String userId, String userPw) {
         Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name()));
@@ -53,11 +54,12 @@ public class UserService {
         TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), List.of(user.getUserRole().getText()));
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .refreshTokenKey(user)
+                .refreshTokenKey(user.getUserId())
                 .refreshTokenValue(tokenDto.getRefreshToken())
                 .build();
 
         tokenRepository.saveAndFlush(refreshToken);
+        tokenRepository.deleteByRefreshTokenValue(userId);
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
