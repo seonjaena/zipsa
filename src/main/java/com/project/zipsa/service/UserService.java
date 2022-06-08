@@ -59,7 +59,7 @@ public class UserService {
                 .build();
 
         tokenRepository.saveAndFlush(refreshToken);
-        tokenRepository.deleteByRefreshTokenValue(userId);
+        tokenRepository.deleteByRefreshTokenKey(userId);
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
