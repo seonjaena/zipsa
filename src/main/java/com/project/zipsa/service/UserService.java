@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,10 +37,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
+    private Users getUserNotDeleted(String userId) {
+        return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
+                .orElseThrow(() -> new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name()));
+    }
+
     @Transactional
     public ResponseLoginDto login(String userId, String userPw) {
-        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
-                .orElseThrow(() -> new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name()));
+        Users user = getUserNotDeleted(userId);
 
         if(!passwordEncoder.matches(userPw, user.getUserPw())) {
             throw new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name());
@@ -119,18 +122,33 @@ public class UserService {
     }
 
     public GetMeResponseDto getMyInfo(String userId) {
-        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-        return new GetMeResponseDto(user);
+        return new GetMeResponseDto(getUserNotDeleted(userId));
     }
 
     @Transactional
     public void changeAlert(ChangeAlertRequestDto changeAlertRequestDto, String userId) {
-        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        Users user = getUserNotDeleted(userId);
         user.changeAlert(changeAlertRequestDto.getIsAlert(),
                         changeAlertRequestDto.getIsMarketingSMS(),
                         changeAlertRequestDto.getIsMarketingEmail());
+    }
+
+    @Transactional
+    public void deleteMyInfo(DeleteMeRequestDto deleteMeRequestDto, String userId) {
+        checkUserId(deleteMeRequestDto.getUserId(), userId);
+        Users user = getUserNotDeleted(deleteMeRequestDto.getUserId());
+        boolean isValidPw = passwordEncoder.matches(deleteMeRequestDto.getUserPw(), user.getUserPw());
+        if(isValidPw) {
+            userRepository.delete(user);
+        }else {
+            throw new DeleteMyInfoException("회원탈퇴에 실패했습니다. 아이디 혹은 패스워드를 확인하세요.");
+        }
+    }
+
+    private void checkUserId(String inputUserId, String tokenUserId) {
+        if(!inputUserId.equals(tokenUserId)) {
+            throw new UserIdNotSameWithTokenKeyException("아이디가 잘못되었습니다.");
+        }
     }
 
     private void checkUserPhoneDuplicate(String phone) {

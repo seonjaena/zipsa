@@ -82,4 +82,11 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
+    @DeleteMapping
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> deleteMyInfo(@RequestBody DeleteMeRequestDto deleteMeRequestDto,
+                                                                                        Principal principal) {
+        userService.deleteMyInfo(deleteMeRequestDto, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
 }

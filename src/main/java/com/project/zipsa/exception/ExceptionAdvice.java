@@ -66,6 +66,20 @@ public class ExceptionAdvice {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, GENERAL_FAIL_DETAIL.NO_DATA);
     }
 
+    @ExceptionHandler(UserIdNotSameWithTokenKeyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> userIdNotSameWithTokenKey(UserIdNotSameWithTokenKeyException e) {
+        log.error("message = {}", e.getMessage());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
+    }
+
+    @ExceptionHandler(DeleteMyInfoException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> deleteMyInfo(DeleteMyInfoException e) {
+        log.error("message = {}", e.getMessage());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_FAIL_DETAIL> unknownException(Exception e) {
