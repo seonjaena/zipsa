@@ -98,4 +98,12 @@ public class Users extends AuditDateTime {
         this.userStatus = USER_STATUS.DELETED;
     }
 
+    public void changeNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public void changeUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
 }

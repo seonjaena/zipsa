@@ -145,6 +145,18 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public String changeUserNickname(String userNickname, String userId) {
+        getUserNotDeleted(userId).changeNickname(userNickname);
+        return userNickname;
+    }
+
+    @Transactional
+    public String changeUserPhone(String userPhone, String userId) {
+        getUserNotDeleted(userId).changeUserPhone(userPhone);
+        return userPhone;
+    }
+
     private void checkUserId(String inputUserId, String tokenUserId) {
         if(!inputUserId.equals(tokenUserId)) {
             throw new UserIdNotSameWithTokenKeyException("아이디가 잘못되었습니다.");

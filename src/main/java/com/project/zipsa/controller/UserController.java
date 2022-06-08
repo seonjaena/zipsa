@@ -89,4 +89,16 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
+    @PatchMapping(value = "/nickname")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeNicknameResponseDto> changeNickname(@RequestParam(name = "userNickname") String userNickname, Principal principal) {
+        String changedNickname = userService.changeUserNickname(userNickname, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeNicknameResponseDto(changedNickname));
+    }
+
+    @PatchMapping(value = "/phone")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangePhoneResponseDto> changePhone(@RequestParam(name = "userPhone") String userPhone, Principal principal) {
+        String changedPhone = userService.changeUserPhone(userPhone, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangePhoneResponseDto(changedPhone));
+    }
+
 }
