@@ -6,6 +6,7 @@ import com.project.zipsa.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +25,10 @@ import java.util.List;
 public class JwtProvider {
 
     private String secretKey = "secret";
-    private Long accessTokenValidMillisecond = 30 * 60 * 1000L;
-    private Long refreshTokenValidMillisecond = 14 * 24 * 60 * 60 * 1000L;
+    @Value("${token.access-expire}")
+    private Long accessTokenValidMillisecond;
+    @Value("${token.refresh-expire}")
+    private Long refreshTokenValidMillisecond;
     private final CustomUserDetailsService userDetailsService;
     private final String ROLES = "roles";
     private final String authorizationHeader = "Authorization";

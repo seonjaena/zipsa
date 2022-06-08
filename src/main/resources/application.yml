@@ -31,6 +31,10 @@ local:
     dir-prefix: /Users/naseonjae/zipsa-files
 
 
+token:
+  access-expire: 1800000
+  refresh-expire: 5356800000
+
 ---
 
 spring:

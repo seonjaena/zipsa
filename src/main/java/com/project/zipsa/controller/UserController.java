@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -67,6 +68,11 @@ public class UserController {
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePw(@RequestBody ChangePwRequestDto changePwRequestDto) {
         userService.changePw(changePwRequestDto);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
+    @GetMapping
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GetMeResponseDto> getMyInfo(Principal principal) {
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.getMyInfo(principal.getName()));
     }
 
 }

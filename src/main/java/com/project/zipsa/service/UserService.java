@@ -116,6 +116,12 @@ public class UserService {
         user.changePw(passwordEncoder.encode(changePwRequestDto.getUserPw()));
     }
 
+    public GetMeResponseDto getMyInfo(String userId) {
+        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        return new GetMeResponseDto(user);
+    }
+
     private void checkUserPhoneDuplicate(String phone) {
         boolean isDuplicate = userRepository.findByUserPhone(phone).isPresent();
         if(isDuplicate) {
