@@ -75,4 +75,11 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.getMyInfo(principal.getName()));
     }
 
+    @PatchMapping(value = "/alert")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changeAlert(@RequestBody ChangeAlertRequestDto changeAlertRequestDto,
+                                                                                       Principal principal) {
+        userService.changeAlert(changeAlertRequestDto, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
 }

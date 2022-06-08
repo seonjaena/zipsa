@@ -58,8 +58,8 @@ public class UserService {
                 .refreshTokenValue(tokenDto.getRefreshToken())
                 .build();
 
-        tokenRepository.saveAndFlush(refreshToken);
         tokenRepository.deleteByRefreshTokenKey(userId);
+        tokenRepository.saveAndFlush(refreshToken);
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
@@ -122,6 +122,15 @@ public class UserService {
         Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
         return new GetMeResponseDto(user);
+    }
+
+    @Transactional
+    public void changeAlert(ChangeAlertRequestDto changeAlertRequestDto, String userId) {
+        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        user.changeAlert(changeAlertRequestDto.getIsAlert(),
+                        changeAlertRequestDto.getIsMarketingSMS(),
+                        changeAlertRequestDto.getIsMarketingEmail());
     }
 
     private void checkUserPhoneDuplicate(String phone) {

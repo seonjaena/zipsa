@@ -88,4 +88,10 @@ public class Users extends AuditDateTime {
         this.userPw = userPw;
     }
 
+    public void changeAlert(boolean isAlert, boolean isMarketingSMS, boolean isMarketingEmail) {
+        this.isAlert = isAlert;
+        this.isMarketingSMS = isMarketingSMS;
+        this.isMarketingEmail = isMarketingEmail;
+    }
+
 }
