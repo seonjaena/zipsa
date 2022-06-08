@@ -94,4 +94,8 @@ public class Users extends AuditDateTime {
         this.isMarketingEmail = isMarketingEmail;
     }
 
+    public void deleteMyInfo() {
+        this.userStatus = USER_STATUS.DELETED;
+    }
+
 }

@@ -139,7 +139,7 @@ public class UserService {
         Users user = getUserNotDeleted(deleteMeRequestDto.getUserId());
         boolean isValidPw = passwordEncoder.matches(deleteMeRequestDto.getUserPw(), user.getUserPw());
         if(isValidPw) {
-            userRepository.delete(user);
+            user.deleteMyInfo();
         }else {
             throw new DeleteMyInfoException("회원탈퇴에 실패했습니다. 아이디 혹은 패스워드를 확인하세요.");
         }
