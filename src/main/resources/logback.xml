@@ -7,7 +7,7 @@
         <layout>
             <pattern>[%thread] [%date] [%level] [%file:%line] - %msg%n</pattern>
         </layout>
-        <logGroupName>seonjaena-</logGroupName>
+        <logGroupName>seonjaena</logGroupName>
         <logStreamUuidPrefix>seonjaena-</logStreamUuidPrefix>
         <logRegion>ap-northeast-2</logRegion>
         <maxBatchLogEvents>500</maxBatchLogEvents>
@@ -17,12 +17,6 @@
         <accessKeyId>AKIA442EBW2WH4TXKELQ</accessKeyId>
         <secretAccessKey>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</secretAccessKey>
     </appender>
-
-    <springProfile name="(stage | production)">
-        <logger name="org.springframework" level="INFO">
-            <appender-ref ref="aws_cloud_watch_log"/>
-        </logger>
-    </springProfile>
 
 
     <appender name = "STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
@@ -48,6 +42,10 @@
 
     <logger name = "org.springframework" level = "info" />
     <logger name = "org.hibernate" level = "info" />
+
+    <root level = "info">
+        <appender-ref ref = "aws_cloud_watch_log" />
+    </root>
 
     <root level = "debug">
         <appender-ref ref = "STDOUT" />
