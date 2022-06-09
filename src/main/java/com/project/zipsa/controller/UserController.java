@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -111,10 +112,10 @@ public class UserController {
     }
 
     @PatchMapping(value = "/profile")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> changeProfileImage(@RequestParam(name = "userProfileImage") MultipartFile userProfileImage,
-                                                                              Principal principal) {
-
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, null);
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeProfileImageRequestDto> changeProfileImage(@RequestParam(name = "userProfileImage") MultipartFile userProfileImage,
+                                                                                                    Principal principal) throws IOException {
+        String savedFileName = userService.changeUserProfileImage(userProfileImage, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeProfileImageRequestDto(savedFileName));
     }
 
     @PatchMapping(value = "/id")

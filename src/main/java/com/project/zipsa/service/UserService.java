@@ -16,6 +16,8 @@ import com.project.zipsa.repository.CheckCodeRepository;
 import com.project.zipsa.repository.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
+import com.project.zipsa.util.s3.S3DeleteUtil;
+import com.project.zipsa.util.s3.S3UploadUtil;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +45,8 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final S3UploadUtil s3UploadUtil;
+    private final S3DeleteUtil s3DeleteUtil;
 
     private Users getUserNotDeleted(String userId) {
         return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
@@ -169,9 +175,13 @@ public class UserService {
     }
 
     @Transactional
-    public void changeUserProfileImage(MultipartFile profileImage, String userId) {
+    public String changeUserProfileImage(MultipartFile profileImage, String userId) throws IOException {
         Users user = getUserNotDeleted(userId);
         String userProfileImage = user.getUserProfileImage();
+        String savedFileName = s3UploadUtil.upload(profileImage);
+        user.changeUserProfileImage(savedFileName);
+//        s3DeleteUtil.delete(userProfileImage);
+        return savedFileName;
     }
 
     @Transactional

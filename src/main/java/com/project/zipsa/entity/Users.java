@@ -114,4 +114,8 @@ public class Users extends AuditDateTime {
         this.userId = userId;
     }
 
+    public void changeUserProfileImage(String profileImage) {
+        this.userProfileImage = profileImage;
+    }
+
 }
