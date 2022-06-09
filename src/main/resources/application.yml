@@ -20,7 +20,7 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
-  config: classpath:logback.xml
+  config: classpath:logback-spring.xml
 
 local:
   win:
