@@ -106,4 +106,12 @@ public class Users extends AuditDateTime {
         this.userPhone = userPhone;
     }
 
+    public void changeUserBirth(LocalDate userBirth) {
+        this.userBirth = userBirth;
+    }
+
+    public void changeUserId(String userId) {
+        this.userId = userId;
+    }
+
 }

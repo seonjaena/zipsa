@@ -11,8 +11,10 @@ import com.project.zipsa.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -99,6 +101,27 @@ public class UserController {
     public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangePhoneResponseDto> changePhone(@RequestParam(name = "userPhone") String userPhone, Principal principal) {
         String changedPhone = userService.changeUserPhone(userPhone, principal.getName());
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangePhoneResponseDto(changedPhone));
+    }
+
+    @PatchMapping(value = "/birth")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeBirthResponseDto> changeBirth(@RequestParam(name = "userBirth")LocalDate userBirth,
+                                                                       Principal principal) {
+        LocalDate changedBirth = userService.changeUserBirth(userBirth, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeBirthResponseDto(changedBirth));
+    }
+
+    @PatchMapping(value = "/profile")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> changeProfileImage(@RequestParam(name = "userProfileImage") MultipartFile userProfileImage,
+                                                                              Principal principal) {
+
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, null);
+    }
+
+    @PatchMapping(value = "/id")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeIdResponseDto> changeUserId(@RequestParam(name = "userId") String userId,
+                                                                        Principal principal) {
+        String changedUserId = userService.changeUserId(userId, principal.getName());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeIdResponseDto(changedUserId));
     }
 
 }

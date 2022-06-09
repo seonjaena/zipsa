@@ -19,10 +19,12 @@ import com.project.zipsa.security.JwtProvider;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
+    @Value("${uuid.length}")
+    private int uuidLen;
 
     private final UserRepository userRepository;
     private final CheckCodeRepository checkCodeRepository;
@@ -155,6 +160,24 @@ public class UserService {
     public String changeUserPhone(String userPhone, String userId) {
         getUserNotDeleted(userId).changeUserPhone(userPhone);
         return userPhone;
+    }
+
+    @Transactional
+    public LocalDate changeUserBirth(LocalDate userBirth, String userId) {
+        getUserNotDeleted(userId).changeUserBirth(userBirth);
+        return userBirth;
+    }
+
+    @Transactional
+    public void changeUserProfileImage(MultipartFile profileImage, String userId) {
+        Users user = getUserNotDeleted(userId);
+        String userProfileImage = user.getUserProfileImage();
+    }
+
+    @Transactional
+    public String changeUserId(String newUserId, String userId) {
+        getUserNotDeleted(userId).changeUserId(newUserId);
+        return newUserId;
     }
 
     private void checkUserId(String inputUserId, String tokenUserId) {
