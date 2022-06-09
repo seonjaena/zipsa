@@ -40,18 +40,12 @@
         </rollingPolicy>
     </appender>
 
-    <springProfile name="dev">
-        <logger name="com.project.zipsa" level="WARN">
-            <appender-ref ref="aws_cloud_watch_log"/>
-        </logger>
-    </springProfile>
+    <logger name="com.project.zipsa" level="WARN">
+        <appender-ref ref="aws_cloud_watch_log"/>
+    </logger>
 
     <logger name = "org.springframework" level = "info" />
     <logger name = "org.hibernate" level = "info" />
-
-    <root level = "warn">
-        <appender-ref ref = "aws_cloud_watch_log" />
-    </root>
 
     <root level = "debug">
         <appender-ref ref = "STDOUT" />
