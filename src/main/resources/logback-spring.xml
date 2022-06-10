@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <timestamp key="timestamp" datePattern="yyyy-MM-dd-HH-mm-ssSSS"/>
+<!--    <timestamp key="timestamp" datePattern="yyyy-MM-dd-HH-mm-ssSSS"/>-->
 
-    <appender name="aws_cloud_watch_log" class="ca.pjer.logback.AwsLogsAppender">
-        <layout>
-            <pattern>[%thread] [%date] [%level] [%file:%line] - %msg%n</pattern>
-        </layout>
-        <logGroupName>seonjaena</logGroupName>
-        <logStreamUuidPrefix>seonjaena-</logStreamUuidPrefix>
-        <logRegion>ap-northeast-2</logRegion>
-        <maxBatchLogEvents>500</maxBatchLogEvents>
-        <maxFlushTimeMillis>30000</maxFlushTimeMillis>
-        <maxBlockTimeMillis>5000</maxBlockTimeMillis>
-        <retentionTimeDays>0</retentionTimeDays>
-        <accessKeyId>AKIA442EBW2WH4TXKELQ</accessKeyId>
-        <secretAccessKey>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</secretAccessKey>
-    </appender>
+<!--    <appender name="aws_cloud_watch_log" class="ca.pjer.logback.AwsLogsAppender">-->
+<!--        <layout>-->
+<!--            <pattern>[%thread] [%date] [%level] [%file:%line] - %msg%n</pattern>-->
+<!--        </layout>-->
+<!--        <logGroupName>seonjaena</logGroupName>-->
+<!--        <logStreamUuidPrefix>seonjaena-</logStreamUuidPrefix>-->
+<!--        <logRegion>ap-northeast-2</logRegion>-->
+<!--        <maxBatchLogEvents>500</maxBatchLogEvents>-->
+<!--        <maxFlushTimeMillis>30000</maxFlushTimeMillis>-->
+<!--        <maxBlockTimeMillis>5000</maxBlockTimeMillis>-->
+<!--        <retentionTimeDays>0</retentionTimeDays>-->
+<!--        <accessKeyId>AKIA442EBW2WH4TXKELQ</accessKeyId>-->
+<!--        <secretAccessKey>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</secretAccessKey>-->
+<!--    </appender>-->
 
 
     <appender name = "STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
@@ -40,16 +40,16 @@
         </rollingPolicy>
     </appender>
 
-    <springProfile name="dev">
-        <logger name="com.project.zipsa" level="WARN">
-            <appender-ref ref="aws_cloud_watch_log"/>
-        </logger>
-    </springProfile>
-    <springProfile name="prod">
-        <logger name="com.project.zipsa" level="INFO">
-            <appender-ref ref="aws_cloud_watch_log"/>
-        </logger>
-    </springProfile>
+<!--    <springProfile name="dev">-->
+<!--        <logger name="com.project.zipsa" level="WARN">-->
+<!--            <appender-ref ref="aws_cloud_watch_log"/>-->
+<!--        </logger>-->
+<!--    </springProfile>-->
+<!--    <springProfile name="prod">-->
+<!--        <logger name="com.project.zipsa" level="INFO">-->
+<!--            <appender-ref ref="aws_cloud_watch_log"/>-->
+<!--        </logger>-->
+<!--    </springProfile>-->
 
     <logger name = "org.springframework" level = "info" />
     <logger name = "org.hibernate" level = "info" />
