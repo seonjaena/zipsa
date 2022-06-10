@@ -90,7 +90,7 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_PROD?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
+    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
     username: admin
     password: Na6080su12!!
     driver-class-name: org.mariadb.jdbc.Driver

@@ -28,7 +28,7 @@
         </filter>
     </appender>
 
-    <appender name = "file" class = "ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name = "FILE" class = "ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./application_log/application.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] - %replace(%m){'[\u001B\[38;2;255;0;0m, \u001B\[38;2;0;255;0m, \u001B\[m]', ''}%n</pattern>
@@ -40,22 +40,31 @@
         </rollingPolicy>
     </appender>
 
-<!--    <springProfile name="dev">-->
-<!--        <logger name="com.project.zipsa" level="WARN">-->
-<!--            <appender-ref ref="aws_cloud_watch_log"/>-->
-<!--        </logger>-->
-<!--    </springProfile>-->
-<!--    <springProfile name="prod">-->
-<!--        <logger name="com.project.zipsa" level="INFO">-->
-<!--            <appender-ref ref="aws_cloud_watch_log"/>-->
-<!--        </logger>-->
-<!--    </springProfile>-->
-
     <logger name = "org.springframework" level = "info" />
     <logger name = "org.hibernate" level = "info" />
 
-    <root level = "debug">
-        <appender-ref ref = "STDOUT" />
-        <appender-ref ref = "file" />
-    </root>
+
+    <springProfile name="dev">
+        <logger name="com" level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="com" level="WARN">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <root level = "DEBUG">
+            <appender-ref ref="FILE" />
+        </root>
+        <root level = "INFO">
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+
+<!--    <root level = "debug">-->
+<!--        <appender-ref ref = "STDOUT" />-->
+<!--        <appender-ref ref = "FILE" />-->
+<!--    </root>-->
 </configuration>
