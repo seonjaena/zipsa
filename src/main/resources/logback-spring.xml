@@ -18,16 +18,17 @@
 <!--        <secretAccessKey>m4dSLbzZX4kKDVC5Fs7Dbp3Q6T9/D9jXhJ1dYD2K</secretAccessKey>-->
 <!--    </appender>-->
 
+<!--    <define name="hostname" class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner"/>-->
 
     <appender name = "DEV_STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight([%-5level]) %cyan([%thread]) - %m%n</pattern>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight([%-5level]) %cyan([%thread]) %X{client-ip} - %m%n</pattern>
         </encoder>
     </appender>
 
     <appender name = "PROD_STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] - %m%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] %X{client-ip} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
@@ -37,7 +38,7 @@
     <appender name = "FILE" class = "ch.qos.logback.core.rolling.RollingFileAppender">
         <file>application_log/application.log</file>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] - %m%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] %X{client-ip} - %m%n</pattern>
         </encoder>
         <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>application_log/%d{yyyy-MM-dd}/application.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
@@ -48,7 +49,6 @@
 
     <logger name = "org.springframework" level = "info" />
     <logger name = "org.hibernate" level = "info" />
-
 
     <springProfile name="dev">
         <root level="DEBUG">
