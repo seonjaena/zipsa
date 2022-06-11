@@ -27,3 +27,8 @@
 
 ### API 구조
 > **_LINK:_**  [컨플루언스](https://sky114z21.atlassian.net/wiki/spaces/~60afb7125563670070980800/pages/753672/API)
+
+------------
+
+### 테이블 구조
+> **_LINK:_**  추가 예정
