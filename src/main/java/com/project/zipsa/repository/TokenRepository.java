@@ -1,10 +1,21 @@
 package com.project.zipsa.repository;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.project.zipsa.entity.RefreshToken;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
-public interface TokenRepository extends JpaRepository<RefreshToken, Long> {
 
-    void deleteByRefreshTokenKey(String refreshTokenValue);
+@Slf4j
+@Repository
+@RequiredArgsConstructor
+public class TokenRepository {
+
+    private final DynamoDBMapper dynamoDBMapper;
+
+    public void save(RefreshToken refreshToken) {
+        dynamoDBMapper.save(refreshToken);
+    }
 
 }

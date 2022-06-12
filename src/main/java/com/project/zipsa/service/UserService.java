@@ -20,6 +20,7 @@ import com.project.zipsa.util.s3.S3DeleteUtil;
 import com.project.zipsa.util.s3.S3UploadUtil;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -67,13 +69,8 @@ public class UserService {
 
         TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), List.of(user.getUserRole().getText()));
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .refreshTokenKey(user.getUserId())
-                .refreshTokenValue(tokenDto.getRefreshToken())
-                .build();
+        tokenRepository.save(new RefreshToken(user.getUserId(), tokenDto.getRefreshToken()));
 
-        tokenRepository.deleteByRefreshTokenKey(userId);
-        tokenRepository.saveAndFlush(refreshToken);
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 

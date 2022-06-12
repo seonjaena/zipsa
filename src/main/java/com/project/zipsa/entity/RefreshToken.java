@@ -1,29 +1,21 @@
 package com.project.zipsa.entity;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.*;
-import javax.persistence.*;
-@Entity
-@Table(name = "REFRESH_TOKEN")
+
+@Setter
 @Getter
-@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@DynamoDBTable(tableName = "REFRESH_TOKEN")
 public class RefreshToken {
 
-    @Id
-    @Column(name = "REFRESH_TOKEN_IDX")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long refreshTokenIdx;
+    @DynamoDBHashKey(attributeName = "KEY")
+    private String key;
 
-    @Column(name = "REFRESH_TOKEN_KEY")
-    private String refreshTokenKey;
-
-    @Column(name = "REFRESH_TOKEN_VALUE")
-    private String refreshTokenValue;
-
-    @Builder
-    public RefreshToken(String refreshTokenKey, String refreshTokenValue) {
-        this.refreshTokenKey = refreshTokenKey;
-        this.refreshTokenValue = refreshTokenValue;
-    }
+    @DynamoDBAttribute(attributeName = "VALUE")
+    private String value;
 
 }
