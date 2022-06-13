@@ -32,7 +32,6 @@ public class JwtProvider {
     private final CustomUserDetailsService userDetailsService;
     private final String ROLES = "roles";
     private final String authorizationHeader = "Authorization";
-    private final String bearerPrefix = "Bearer ";
 
     @PostConstruct
     protected void init() {
@@ -48,7 +47,6 @@ public class JwtProvider {
         String refreshToken = createRefreshToken(claims);
 
         return TokenDto.builder()
-                .grantType(bearerPrefix)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .accessTokenExpireDate(accessTokenValidMillisecond)
@@ -77,10 +75,10 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         String authorization = request.getHeader(authorizationHeader);
         log.info("[ AUTH ==> {} ]", authorization);
-        if (StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
-            return authorization.substring(bearerPrefix.length());
+        if(authorization == null || authorization.isEmpty()) {
+            return null;
         }
-        return null;
+        return authorization;
     }
 
     // JWT의 유효성 및 만료일자 확인
