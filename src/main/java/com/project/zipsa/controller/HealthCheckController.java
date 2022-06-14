@@ -1,6 +1,7 @@
 package com.project.zipsa.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckController {
 
     @GetMapping
-    public String get() {
+    public HttpStatus get() {
         log.info("Health Check Success");
-        return "OK";
+        return HttpStatus.OK;
     }
 
 }

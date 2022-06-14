@@ -77,13 +77,9 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         String authorization = request.getHeader(authorizationHeader);
         log.info("[ AUTH ==> {} ]", authorization);
-
-        if(!request.getRequestURI().equals("/healthcheck")) {
-            if (StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
-                return authorization.substring(bearerPrefix.length());
-            }
+        if (StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
+            return authorization.substring(bearerPrefix.length());
         }
-        
         return null;
     }
 
