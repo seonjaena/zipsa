@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-<!--    <timestamp key="timestamp" datePattern="yyyy-MM-dd-HH-mm-ssSSS"/>-->
-
-<!--    <appender name="aws_cloud_watch_log" class="ca.pjer.logback.AwsLogsAppender">-->
-<!--        <layout>-->
-<!--            <pattern>[%thread] [%date] [%level] [%file:%line] - %msg%n</pattern>-->
-<!--        </layout>-->
-<!--        <logGroupName>seonjaena</logGroupName>-->
-<!--        <logStreamUuidPrefix>seonjaena-</logStreamUuidPrefix>-->
-<!--        <logRegion>ap-northeast-2</logRegion>-->
-<!--        <maxBatchLogEvents>500</maxBatchLogEvents>-->
-<!--        <maxFlushTimeMillis>30000</maxFlushTimeMillis>-->
-<!--        <maxBlockTimeMillis>5000</maxBlockTimeMillis>-->
-<!--        <retentionTimeDays>0</retentionTimeDays>-->
-<!--        <accessKeyId>AKIA442EBW2WH4TXKELQ</accessKeyId>-->
-<!--        <secretAccessKey>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</secretAccessKey>-->
-<!--    </appender>-->
-
-<!--    <define name="hostname" class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner"/>-->
-
     <appender name = "DEV_STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight([%-5level]) %cyan([%thread]) %X{client-ip} - %m%n</pattern>
