@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class JwtProvider {
 
-    private static final String ALB_HEALTHCHECK_PATH = "/healthcheck";
+    private static final String ALB_HEALTHCHECK_PATH = "/api/healthcheck/alb";
 
     private String secretKey = "secret";
     @Value("${token.access-expire}")

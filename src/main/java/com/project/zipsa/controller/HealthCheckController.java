@@ -11,9 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/healthcheck")
 public class HealthCheckController {
 
-    @GetMapping
-    public HttpStatus get() {
+    @GetMapping(value = "/task")
+    public HttpStatus healthCheckTask() {
         log.info("Health Check Success");
+        return HttpStatus.OK;
+    }
+
+    @GetMapping(value = "/alb")
+    public HttpStatus healthCheckALB() {
+        log.info("Load Balancing Health Check Success");
         return HttpStatus.OK;
     }
 
