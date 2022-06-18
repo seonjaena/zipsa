@@ -7,6 +7,7 @@ ENV PROFILE $PROFILE
 RUN apt-get update -y && \
     apt-get install git -y && \
     apt-get install unzip -y && \
+    apt-get install zip -y && \
     apt-get install curl -y && \
     apt-get install vim -y
 
