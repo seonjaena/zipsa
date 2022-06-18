@@ -22,4 +22,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 COPY ${JAR_FILE} app.jar
 
 
-ENTRYPOINT ["java", "-Dencrypt.key=${KEY}", "encrypt.algorithm=${ALGORITHM}", "-Dspring.profiles.active=${PROFILE}", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Dencrypt.key=${KEY}", "-Dencrypt.algorithm=${ALGORITHM}", "-Dspring.profiles.active=${PROFILE}", "-jar", "/app.jar"]
