@@ -38,6 +38,14 @@ token:
 uuid:
   length: 36
 
+encrypt:
+  key: ${encrypt.key}
+  algorithm: ${encrypt.algorithm}
+
+jasypt:
+  encryptor:
+    bean: encryptorBean
+
 ---
 
 spring:
@@ -46,9 +54,9 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: admin
-    password: Na6080su12!!
+    url: ENC(LF4Gl8lzDQ4A+/g3GCKXpgoz9vL4kz2UhG+syFjFuvqRSNJQ7FJqeLA7Jo9EEz/2yOgdvBAboRo+XTGjoecGI2UpaJL8TvOuRdKrAZcJwxXgiK1RRiyD/frX5BmQIA1M0fFpR6TBINp/UbnX7SLVDilSFjyPrBMaEsRqdjlC4/hnBvjQnF7TqkkhTf6RGHAuM/Wk5kLc0ZWwdCIgVdlr7naJ4iWiRBx+eEOR8hXqU48=)
+    username: ENC(hukSQhlmFI3CVGxJLf7rNCf8jSGuGYp4ipwgLIkgEO8=)
+    password: ENC(Uhmra2V5VCJcd2V8+njFbD5vStnPZhjzlNRVyYSm+Xk=)
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
@@ -90,9 +98,9 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: admin
-    password: Na6080su12!!
+    url: ENC(LF4Gl8lzDQ4A+/g3GCKXpgoz9vL4kz2UhG+syFjFuvqRSNJQ7FJqeLA7Jo9EEz/2yOgdvBAboRo+XTGjoecGI2UpaJL8TvOuRdKrAZcJwxXgiK1RRiyD/frX5BmQIA1M0fFpR6TBINp/UbnX7SLVDilSFjyPrBMaEsRqdjlC4/hnBvjQnF7TqkkhTf6RGHAuM/Wk5kLc0ZWwdCIgVdlr7naJ4iWiRBx+eEOR8hXqU48=)
+    username: ENC(hukSQhlmFI3CVGxJLf7rNCf8jSGuGYp4ipwgLIkgEO8=)
+    password: ENC(Uhmra2V5VCJcd2V8+njFbD5vStnPZhjzlNRVyYSm+Xk=)
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
