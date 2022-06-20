@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .antMatchers("/api/log/**", "/log/**").permitAll()
                 .antMatchers("/api/healthcheck/**").permitAll()
                 .antMatchers("/exception/**").permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
