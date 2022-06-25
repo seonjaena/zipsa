@@ -32,3 +32,11 @@
 
 ### 테이블 구조
 > **_LINK:_**  추가 예정
+
+------------
+### 서비스 구조
+<img src="readme.image/service.png" width="100%" height="650px" title="service"/>
+
+------------
+### 배포 방식
+<img src="readme.image/infra.png" width="100%" height="450" title="service"/>
