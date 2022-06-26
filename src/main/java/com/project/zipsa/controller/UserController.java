@@ -55,7 +55,7 @@ public class UserController {
         userService.checkPhoneCode(userPhone, code);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
-
+    
     @PostMapping(value = "/find/id")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> findId(@RequestBody FindIdRequestDto findIdRequestDto) {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.findId(findIdRequestDto));

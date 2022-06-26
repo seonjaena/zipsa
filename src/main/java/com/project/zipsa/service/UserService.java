@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,10 +51,11 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final S3UploadUtil s3UploadUtil;
     private final S3DeleteUtil s3DeleteUtil;
+    private final MessageSource messageSource;
 
     private Users getUserNotDeleted(String userId) {
         return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
-                .orElseThrow(() -> new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name()));
+                .orElseThrow(() -> new UnAuthenticatedException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
     }
 
     @Transactional
@@ -60,11 +63,11 @@ public class UserService {
         Users user = getUserNotDeleted(userId);
 
         if(!passwordEncoder.matches(userPw, user.getUserPw())) {
-            throw new UnAuthenticatedException(GENERAL_FAIL_DETAIL.WRONG_USER_INFO.name());
+            throw new UnAuthenticatedException(messageSource.getMessage("error.user.login", null, Locale.KOREA));
         }
 
         if (!(user.getUserRole() == USER_ROLE.USER || user.getUserRole() == USER_ROLE.ADMIN)) {
-            throw new UnAuthorizedException(GENERAL_FAIL_DETAIL.WRONG_AUTHORITY.name());
+            throw new UnAuthorizedException(messageSource.getMessage("error.user.authority", null, Locale.KOREA));
         }
 
         TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), List.of(user.getUserRole().getText()));
@@ -101,7 +104,7 @@ public class UserService {
         boolean isValid = checkCodeRepository.findFirstByCheckCodeAndCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(
                 code, CHECK_CODE_TYPE.PHONE, userPhone).isPresent();
         if(!isValid) {
-            throw new BadValidDeviceCodeException(GENERAL_FAIL_DETAIL.BAD_DEVICE_CODE.name());
+            throw new BadValidDeviceCodeException(messageSource.getMessage("error.user.phone.check.code", null, Locale.KOREA));
         }
     }
 
@@ -110,7 +113,7 @@ public class UserService {
         Users user = userRepository.findByUserNameAndUserStatusAndUserBirthAndUserPhone(
                                                         findIdRequestDto.getUserName(), USER_STATUS.NORMAL,
                                                         findIdRequestDto.getUserBirth(), findIdRequestDto.getUserPhone())
-                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+                .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
         return user.getUserId();
     }
 
@@ -119,13 +122,13 @@ public class UserService {
         userRepository.findByUserNameAndUserStatusAndUserBirthAndUserPhoneAndUserId(
                         findPwRequestDto.getUserName(), USER_STATUS.NORMAL, findPwRequestDto.getUserBirth(),
                         findPwRequestDto.getUserPhone(), findPwRequestDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+                .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
     }
 
     @Transactional
     public void changePw(ChangePwRequestDto changePwRequestDto) {
         Users user = userRepository.findByUserIdAndUserStatus(changePwRequestDto.getUserId(), USER_STATUS.NORMAL)
-                .orElseThrow(() -> new UserNotFoundException(GENERAL_FAIL_DETAIL.NO_DATA.name()));
+                .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
         user.changePw(passwordEncoder.encode(changePwRequestDto.getUserPw()));
     }
 
@@ -149,7 +152,7 @@ public class UserService {
         if(isValidPw) {
             user.deleteMyInfo();
         }else {
-            throw new DeleteMyInfoException("회원탈퇴에 실패했습니다. 아이디 혹은 패스워드를 확인하세요.");
+            throw new DeleteMyInfoException(messageSource.getMessage("error.user.delete", null, Locale.KOREA));
         }
     }
 
@@ -189,32 +192,35 @@ public class UserService {
 
     private void checkUserId(String inputUserId, String tokenUserId) {
         if(!inputUserId.equals(tokenUserId)) {
-            throw new UserIdNotSameWithTokenKeyException("아이디가 잘못되었습니다.");
+            throw new UserIdNotSameWithTokenKeyException(messageSource.getMessage("error.user.info", null, Locale.KOREA));
         }
     }
 
     private void checkUserPhoneDuplicate(String phone) {
         boolean isDuplicate = userRepository.findByUserPhone(phone).isPresent();
         if(isDuplicate) {
-            throw new DuplicateUserPhoneException(GENERAL_FAIL_DETAIL.DUPLICATE_PHONE.name());
+            throw new DuplicateUserPhoneException(messageSource.getMessage("error.user.phone.duplicate", null, Locale.KOREA));
         }
     }
 
     private void validateUserPhone(String phone) {
+
+        String message = messageSource.getMessage("error.user.phone.bad.form", null, Locale.KOREA);
+
         // 길이가 12 ~ 13자리인지 확인
         if(!(phone.length() == 12 || phone.length() == 13)) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
         // '-'를 제외한 길이가 10 ~ 11자리인지 확인
         String rawPhone = phone.replace("-", "");
         if(!(rawPhone.length() == 10 || rawPhone.length() == 11)) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
         // 숫자만 포함하는지 검사
         if(!StringUtils.isNumeric(rawPhone)) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
 
@@ -227,17 +233,17 @@ public class UserService {
 
         // 첫 번째 자리가 '011' 혹은 '010'인지 확인
         if(!(firStr.equals("011") || firStr.equals("010"))) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
         // 두번째 자리가 3 ~ 4자리인지 확인
         if(!(secStr.length() == 3 || secStr.length() == 4)) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
         // 마지막 자리가 4자리인지 확인
         if(!(thirdStr.length() == 4)) {
-            throw new BadUserPhoneException(GENERAL_FAIL_DETAIL.BAD_TYPE_PHONE.name());
+            throw new BadUserPhoneException(message);
         }
 
     }

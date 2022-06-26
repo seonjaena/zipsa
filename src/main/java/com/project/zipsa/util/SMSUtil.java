@@ -1,6 +1,5 @@
 package com.project.zipsa.util;
 
-import com.project.zipsa.dto.enums.GENERAL_FAIL_DETAIL;
 import com.project.zipsa.exception.custom.SendSMSFailException;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
@@ -33,7 +32,7 @@ public class SMSUtil {
         try {
             JSONObject result = message.send(map);
         }catch(CoolsmsException e) {
-            throw new SendSMSFailException(GENERAL_FAIL_DETAIL.SEND_SMS.name());
+            throw new SendSMSFailException(e.getMessage());
         }
         return code;
     }

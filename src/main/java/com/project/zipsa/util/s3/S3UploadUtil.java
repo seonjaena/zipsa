@@ -6,12 +6,14 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class S3UploadUtil {
 
     private final AmazonS3Client amazonS3Client;
+    private final MessageSource messageSource;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -42,7 +45,7 @@ public class S3UploadUtil {
 
     public String upload(MultipartFile multipartFile) throws IOException {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
-                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+                .orElseThrow(() -> new IllegalArgumentException(messageSource.getMessage("error.user.change.profile", null, Locale.KOREA)));
 
         return upload(uploadFile, dirPrefix);
     }
