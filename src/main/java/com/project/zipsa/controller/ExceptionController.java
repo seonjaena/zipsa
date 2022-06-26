@@ -21,7 +21,7 @@ public class ExceptionController {
 
     @GetMapping(value = "/entryPoint")
     public void entryPointException() {
-        throw new UnAuthenticatedException(messageSource.getMessage("error.user.authentication", null, Locale.KOREA));
+        throw new UnAuthenticatedException(messageSource.getMessage("error.jwt.expire", null, Locale.KOREA));
     }
 
     @GetMapping(value = "/accessDenied")
