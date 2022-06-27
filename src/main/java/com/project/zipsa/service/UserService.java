@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -72,13 +73,13 @@ public class UserService {
 
         TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), List.of(user.getUserRole().getText()));
 
-        tokenRepository.save(new RefreshToken(user.getUserId(), tokenDto.getRefreshToken()));
+        tokenRepository.save(new RefreshToken(tokenDto.getRefreshToken(), user.getUserId()));
 
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
     public String refreshAccessToken(String refreshToken) {
-        return tokenRepository.findByValue(refreshToken).getValue();
+        return jwtProvider.refreshAccessToken(tokenRepository.find(refreshToken).getUserId(), List.of("a"));
     }
 
     public List<JoinPageResponseDto> joinPage() {

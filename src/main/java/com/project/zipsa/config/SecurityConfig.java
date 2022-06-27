@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/api/user/login", "/api/user/join", "/api/user/phone", "/api/user/find/id", "/api/user/find/pw", "/api/user/pw").permitAll()
+                .antMatchers("/api/user/login", "/api/user/join", "/api/user/phone", "/api/user/find/id", "/api/user/find/pw", "/api/user/pw", "/api/user/accessToken").permitAll()
                 .antMatchers("/api/log/**", "/log/**").permitAll()
                 .antMatchers("/api/healthcheck/**").permitAll()
                 .antMatchers("/exception/**").permitAll()

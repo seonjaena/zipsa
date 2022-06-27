@@ -22,7 +22,7 @@ public class ExceptionAdvice {
     private final MessageSource messageSource;
 
     @ExceptionHandler(UnAuthenticatedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> unAuthenticatedException(UnAuthenticatedException e) {
         log.error("message = {}", e.getMessage());
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
@@ -43,7 +43,7 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(UnAuthorizedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> unAuthorizedException(UnAuthorizedException e) {
         log.error("message = {}", e.getMessage());
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
@@ -79,7 +79,14 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(DeleteMyInfoException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> deleteMyInfo(DeleteMyInfoException e) {
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> deleteMyInfoException(DeleteMyInfoException e) {
+        log.error("message = {}", e.getMessage());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> refreshTokenNotFoundException(RefreshTokenNotFoundException e) {
         log.error("message = {}", e.getMessage());
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
     }
