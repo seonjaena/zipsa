@@ -31,6 +31,11 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.login(loginRequestDto.getUserId(), loginRequestDto.getUserPw()));
     }
 
+    @GetMapping(value = "/accessToken")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> refreshAccessToken(@RequestParam(name = "refreshToken") String refreshToken) {
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.refreshAccessToken(refreshToken));
+    }
+
     @GetMapping(value = "/join")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, List<JoinPageResponseDto>> getUserInfo() {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.joinPage());

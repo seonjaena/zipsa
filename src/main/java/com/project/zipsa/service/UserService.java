@@ -77,6 +77,10 @@ public class UserService {
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
+    public String refreshAccessToken(String refreshToken) {
+        return tokenRepository.findByValue(refreshToken).getValue();
+    }
+
     public List<JoinPageResponseDto> joinPage() {
         return userRepository.findAll().stream()
                 .map(u -> new JoinPageResponseDto(u.getUserId(), u.getUserNickname()))
