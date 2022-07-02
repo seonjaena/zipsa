@@ -79,7 +79,12 @@ public class UserService {
     }
 
     public String refreshAccessToken(String refreshToken) {
-        return jwtProvider.refreshAccessToken(tokenRepository.find(refreshToken).getUserId(), List.of("a"));
+        Users user = getUserNotDeleted(tokenRepository.find(refreshToken).getUserId());
+        try {
+            return jwtProvider.refreshAccessToken(user.getUserId(), List.of(user.getUserRole().getText()));
+        }catch(Exception e) {
+            throw new RefreshTokenExpireException(messageSource.getMessage("error.jwt.refresh.expire", null, Locale.KOREA));
+        }
     }
 
     public List<JoinPageResponseDto> joinPage() {

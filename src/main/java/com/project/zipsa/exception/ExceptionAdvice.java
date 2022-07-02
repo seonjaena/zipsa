@@ -91,6 +91,13 @@ public class ExceptionAdvice {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
     }
 
+    @ExceptionHandler(RefreshTokenExpireException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> refreshTokenExpireException(RefreshTokenExpireException e) {
+        log.error("message = {}", e.getMessage());
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> unknownException(Exception e) {
