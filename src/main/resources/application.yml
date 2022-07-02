@@ -32,7 +32,8 @@ local:
 
 
 token:
-  access-expire: 1800000
+  # 5분 (1000 * 60 * 5) / 30분 (1000 * 60 * 30) / 1시간 (1000 * 60 * 60)
+  access-expire: 300000
   refresh-expire: 5356800000
 
 uuid:
