@@ -7,6 +7,7 @@ import com.project.zipsa.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -49,13 +53,10 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/api/user/login", "/api/user/join", "/api/user/phone", "/api/user/find/id", "/api/user/find/pw", "/api/user/pw", "/api/user/accessToken").permitAll()
-                .antMatchers("/api/log/**", "/log/**").permitAll()
-                .antMatchers("/api/healthcheck/**").permitAll()
-                .antMatchers("/exception/**").permitAll()
-                .antMatchers("/actuator/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user").hasRole("USER")
+                .antMatchers(HttpMethod.PATCH, "/api/user/alert", "/api/user/nickname", "/api/user/phone", "/api/user/birth", "/api/user/profile", "/api/user/id").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/user").hasRole("USER")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)

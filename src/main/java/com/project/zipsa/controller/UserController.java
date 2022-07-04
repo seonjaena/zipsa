@@ -54,6 +54,18 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
+    @GetMapping(value = "/check/id")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkId(@RequestParam(name = "userId") String userId) {
+        boolean isAvailable = !userService.checkExistUserId(userId);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
+    }
+
+    @GetMapping(value = "/check/nickname")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkNickname(@RequestParam(name = "userNickname") String userNickname) {
+        boolean isAvailable = !userService.checkExistNickname(userNickname);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
+    }
+
     @PostMapping(value = "/phone")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> checkPhoneCode(@RequestParam(name = "userPhone") String userPhone,
                                                                                           @RequestParam(name = "code") String code) {

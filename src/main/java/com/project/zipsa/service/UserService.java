@@ -110,6 +110,14 @@ public class UserService {
         checkCodeRepository.save(new CheckCode(code, CHECK_CODE_TYPE.PHONE, userPhone));
     }
 
+    public boolean checkExistUserId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+    public boolean checkExistNickname(String userNickname) {
+        return userRepository.existsByUserNickname(userNickname);
+    }
+
     public void checkPhoneCode(String userPhone, String code) {
         boolean isValid = checkCodeRepository.findFirstByCheckCodeAndCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(
                 code, CHECK_CODE_TYPE.PHONE, userPhone).isPresent();
