@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChangePwRequestDto {
+public class ChangePwLoginedRequestDto {
 
-    private String userId;
-    private String userPw;
+    private String curPw;
+    private String newPw1;
+    private String newPw2;
 
 }

@@ -84,9 +84,16 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
-    @PatchMapping(value = "/pw")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePw(@RequestBody ChangePwRequestDto changePwRequestDto) {
-        userService.changePw(changePwRequestDto);
+    @PatchMapping(value = "/pw_unlogined")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePwUnlogined(@RequestBody ChangePwUnloginedRequestDto changePwRequestDto) {
+        userService.changePwUnlogined(changePwRequestDto);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
+
+    @PatchMapping(value = "/pw_logined")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePwLogined(@RequestBody ChangePwLoginedRequestDto changePwRequestDto,
+                                                                                           Principal principal) {
+        userService.changePwLogined(principal.getName(), changePwRequestDto);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 

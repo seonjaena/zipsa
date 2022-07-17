@@ -2,7 +2,6 @@ package com.project.zipsa.service;
 
 import com.project.zipsa.dto.auth.ResponseLoginDto;
 import com.project.zipsa.dto.auth.TokenDto;
-import com.project.zipsa.dto.enums.GENERAL_FAIL_DETAIL;
 import com.project.zipsa.dto.enums.PHONE_CHECK_TYPE;
 import com.project.zipsa.dto.user.*;
 import com.project.zipsa.entity.CheckCode;
@@ -31,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -144,10 +142,17 @@ public class UserService {
     }
 
     @Transactional
-    public void changePw(ChangePwRequestDto changePwRequestDto) {
+    public void changePwUnlogined(ChangePwUnloginedRequestDto changePwRequestDto) {
         Users user = userRepository.findByUserIdAndUserStatus(changePwRequestDto.getUserId(), USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
-        user.changePw(passwordEncoder.encode(changePwRequestDto.getUserPw()));
+        user.changePw(passwordEncoder.encode(changePwRequestDto.getNewPw1()));
+    }
+
+    @Transactional
+    public void changePwLogined(String userId, ChangePwLoginedRequestDto changePwRequestDto) {
+        Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
+                .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
+        user.changePw(passwordEncoder.encode(changePwRequestDto.getNewPw1()));
     }
 
     public GetMeResponseDto getMyInfo(String userId) {
