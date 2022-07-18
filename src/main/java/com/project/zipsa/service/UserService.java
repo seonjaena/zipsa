@@ -15,12 +15,14 @@ import com.project.zipsa.repository.CheckCodeRepository;
 import com.project.zipsa.repository.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
+import com.project.zipsa.util.mq.RabbitMqUtil;
 import com.project.zipsa.util.s3.S3DeleteUtil;
 import com.project.zipsa.util.s3.S3UploadUtil;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,6 +53,7 @@ public class UserService {
     private final S3UploadUtil s3UploadUtil;
     private final S3DeleteUtil s3DeleteUtil;
     private final MessageSource messageSource;
+    private final RabbitMqUtil rabbitMqUtil;
 
     private Users getUserNotDeleted(String userId) {
         return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
@@ -95,6 +98,7 @@ public class UserService {
     public void join(JoinRequestDto joinRequestDto) {
         joinRequestDto.setUserPw(passwordEncoder.encode(joinRequestDto.getUserPw()));
         userRepository.save(Users.from(joinRequestDto));
+        rabbitMqUtil.createQueue(joinRequestDto.getUserId());
     }
 
     @Transactional
