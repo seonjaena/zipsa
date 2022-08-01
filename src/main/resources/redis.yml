@@ -1,4 +1,4 @@
 redis:
-  host: 152.67.197.65
+  host: 144.24.83.179
   port: 6379
   password: na6080su12!@
