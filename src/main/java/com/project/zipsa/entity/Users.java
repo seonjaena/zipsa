@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
@@ -53,17 +54,17 @@ public class Users extends AuditDateTime {
     @Column(name = "IS_ALERT")
     private Boolean isAlert;
 
-    @Column(name = "IS_MARKETING_SMS")
-    private Boolean isMarketingSMS;
-
-    @Column(name = "IS_MARKETING_EMAIL")
-    private Boolean isMarketingEmail;
-
     @Column(name = "IS_CHANGE_PW_REQUIRED")
     private Boolean isChangePwRequired;
 
     @Column(name = "USER_PHONE")
     private String userPhone;
+
+    @Column(name = "USER_TOKEN")
+    private String userToken;
+
+    @Column(name = "USER_TOKEN_DATETIME")
+    private LocalDateTime userTokenDatetime;
 
     public Users(JoinRequestDto joinRequestDto) {
         this.userId = joinRequestDto.getUserId();
@@ -72,26 +73,24 @@ public class Users extends AuditDateTime {
         this.userNickname = joinRequestDto.getUserNickname();
         this.userBirth = joinRequestDto.getUserBirth();
         this.isAlert = joinRequestDto.getIsAlert();
-        this.isMarketingSMS = joinRequestDto.getIsMarketingSMS();
-        this.isMarketingEmail = joinRequestDto.getIsMarketingEmail();
         this.userPhone = joinRequestDto.getUserPhone();
         this.isChangePwRequired = false;
         this.userRole = USER_ROLE.USER;
         this.userStatus = USER_STATUS.NORMAL;
+        this.userToken = joinRequestDto.getUserToken();
+        this.userTokenDatetime = LocalDateTime.now();
     }
 
     public static Users from(JoinRequestDto joinRequestDto) {
         return new Users(joinRequestDto);
     }
 
-    public void changePw(String userPw) {
-        this.userPw = userPw;
+    public void changeAlert(boolean isAlert) {
+        this.isAlert = isAlert;
     }
 
-    public void changeAlert(boolean isAlert, boolean isMarketingSMS, boolean isMarketingEmail) {
-        this.isAlert = isAlert;
-        this.isMarketingSMS = isMarketingSMS;
-        this.isMarketingEmail = isMarketingEmail;
+    public void changePw(String userPw) {
+        this.userPw = userPw;
     }
 
     public void deleteMyInfo() {

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,8 +20,7 @@ public class JoinRequestDto {
     private String userNickname;
     private LocalDate userBirth;
     private Boolean isAlert;
-    private Boolean isMarketingSMS;
-    private Boolean isMarketingEmail;
     private String userPhone;
+    private String userToken;
 
 }

@@ -20,8 +20,6 @@ public class GetMeResponseDto {
     private String userNickname;
     private LocalDate userBirth;
     private Boolean isAlert;
-    private Boolean isMarketingSMS;
-    private Boolean isMarketingEmail;
     private String userPhone;
 
     public GetMeResponseDto(Users user) {
@@ -31,8 +29,6 @@ public class GetMeResponseDto {
         this.userNickname = user.getUserNickname();
         this.userBirth = user.getUserBirth();
         this.isAlert = user.getIsAlert();
-        this.isMarketingSMS = user.getIsMarketingSMS();
-        this.isMarketingEmail = user.getIsMarketingEmail();
         this.userPhone = user.getUserPhone();
     }
 

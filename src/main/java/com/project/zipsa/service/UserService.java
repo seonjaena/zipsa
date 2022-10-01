@@ -98,7 +98,7 @@ public class UserService {
     public void join(JoinRequestDto joinRequestDto) {
         joinRequestDto.setUserPw(passwordEncoder.encode(joinRequestDto.getUserPw()));
         userRepository.save(Users.from(joinRequestDto));
-        rabbitMqUtil.createQueue(joinRequestDto.getUserId());
+//        rabbitMqUtil.createQueue(joinRequestDto.getUserId());
     }
 
     @Transactional
@@ -164,11 +164,9 @@ public class UserService {
     }
 
     @Transactional
-    public void changeAlert(ChangeAlertRequestDto changeAlertRequestDto, String userId) {
+    public void changeAlert(boolean isAlert, String userId) {
         Users user = getUserNotDeleted(userId);
-        user.changeAlert(changeAlertRequestDto.getIsAlert(),
-                        changeAlertRequestDto.getIsMarketingSMS(),
-                        changeAlertRequestDto.getIsMarketingEmail());
+        user.changeAlert(isAlert);
     }
 
     @Transactional

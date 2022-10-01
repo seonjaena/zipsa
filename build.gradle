@@ -71,6 +71,9 @@ dependencies {
 	implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.11.1'
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+	implementation 'com.google.firebase:firebase-admin:9.0.0'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'com.h2database:h2'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.3.1'
