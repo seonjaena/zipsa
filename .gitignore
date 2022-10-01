@@ -37,4 +37,3 @@ out/
 .vscode/
 
 application_log/**
-zipsa-firebase.json
