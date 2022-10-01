@@ -16,7 +16,7 @@ public class FirebaseConfig {
     public void init(){
         try{
             InputStream serviceAccount = new ClassPathResource("zipsa-firebase.json").getInputStream();
-            FirebaseOptions options = new FirebaseOptions.Builder()
+            FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
             FirebaseApp.initializeApp(options);
