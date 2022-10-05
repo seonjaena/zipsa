@@ -54,7 +54,7 @@ public class S3UploadUtil {
     private String upload(File uploadFile, String dirName) {
         String fileName = getFileName(uploadFile.getName(), dirName);
         putS3(uploadFile, fileName); // s3로 업로드
-        removeNewFile(uploadFile);
+//        removeNewFile(uploadFile);
         return fileName;
     }
 
