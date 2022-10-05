@@ -202,9 +202,13 @@ public class UserService {
     @Transactional
     public String changeUserProfileImage(MultipartFile profileImage, String userId) throws IOException {
         Users user = getUserNotDeleted(userId);
+        log.error("here1");
         String userProfileImage = user.getUserProfileImage();
+        log.error("here2");
         String savedFileName = s3UploadUtil.upload(profileImage);
+        log.error("here3");
         user.changeUserProfileImage(savedFileName);
+        log.error("here4");
 //        s3DeleteUtil.delete(userProfileImage);
         return savedFileName;
     }
