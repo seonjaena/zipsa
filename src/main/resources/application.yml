@@ -26,7 +26,7 @@ local:
   win:
     dir-prefix: C:/Users/sky11/zipsa-files
   linux:
-    dir-prefix: /ec2-user/zipsa-files
+    dir-prefix: /home/ec2-user/zipsa-files
   mac:
     dir-prefix: /Users/naseonjae/zipsa-files
 

@@ -93,6 +93,8 @@ public class S3UploadUtil {
     private String getLocalFilePath() {
         String os = System.getProperty("os.name").toLowerCase();
 
+        log.info("OS name = {}", os);
+
         if(os.contains("win")) {
             return winDirPrefix;
         }else if(os.contains("linux")) {
