@@ -44,10 +44,8 @@ public class S3UploadUtil {
     private int uuidLen;
 
     public String upload(MultipartFile multipartFile) throws IOException {
-        log.error("this1");
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException(messageSource.getMessage("error.user.change.profile", null, Locale.KOREA)));
-        log.error("this2");
 
         return upload(uploadFile, dirPrefix);
     }
@@ -55,11 +53,8 @@ public class S3UploadUtil {
     // S3로 파일 업로드하기
     private String upload(File uploadFile, String dirName) {
         String fileName = getFileName(uploadFile.getName(), dirName);
-        log.error("here1");
         putS3(uploadFile, fileName); // s3로 업로드
-        log.error("here2");
         removeNewFile(uploadFile);
-        log.error("here3");
         return fileName;
     }
 
@@ -84,13 +79,20 @@ public class S3UploadUtil {
 
     // 로컬에 파일 업로드 하기
     private Optional<File> convert(MultipartFile file) throws IOException {
+        log.error("here1");
         File convertFile = new File(getLocalFilePath() + "/" + file.getOriginalFilename());
+        log.error("here2");
         if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
+            log.error("here3");
             try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
+                log.error("here4");
                 fos.write(file.getBytes());
+                log.error("here5");
             }
+            log.error("here6");
             return Optional.of(convertFile);
         }
+        log.error("here7");
 
         return Optional.empty();
     }
