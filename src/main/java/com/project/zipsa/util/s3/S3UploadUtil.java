@@ -44,8 +44,10 @@ public class S3UploadUtil {
     private int uuidLen;
 
     public String upload(MultipartFile multipartFile) throws IOException {
+        log.error("this1");
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException(messageSource.getMessage("error.user.change.profile", null, Locale.KOREA)));
+        log.error("this2");
 
         return upload(uploadFile, dirPrefix);
     }
@@ -53,8 +55,11 @@ public class S3UploadUtil {
     // S3로 파일 업로드하기
     private String upload(File uploadFile, String dirName) {
         String fileName = getFileName(uploadFile.getName(), dirName);
+        log.error("here1");
         putS3(uploadFile, fileName); // s3로 업로드
-//        removeNewFile(uploadFile);
+        log.error("here2");
+        removeNewFile(uploadFile);
+        log.error("here3");
         return fileName;
     }
 
