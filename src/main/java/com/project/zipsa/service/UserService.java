@@ -204,15 +204,11 @@ public class UserService {
         Users user = getUserNotDeleted(userId);
         log.info("user name = {}, user nickname = {}", user.getUserName(), user.getUserNickname());
         String userProfileImage = user.getUserProfileImage();
-        log.info("user profile image = {}", userProfileImage);
-        String savedFileName = "";
-        try {
-            savedFileName = s3UploadUtil.upload(profileImage);
-        }catch(Exception e) {
-            log.error("save file error, file name = {}", profileImage.getOriginalFilename());
-        }
+        log.info("origin user profile image = {}", userProfileImage);
+        log.info("new user profile image = {}", profileImage.getOriginalFilename());
+        String savedFileName = s3UploadUtil.upload(profileImage);
         user.changeUserProfileImage(savedFileName);
-//        s3DeleteUtil.delete(userProfileImage);
+        log.info("user profile image changed. profile = {}", savedFileName);
         return savedFileName;
     }
 
