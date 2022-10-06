@@ -75,10 +75,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIA442EBW2WIV6SWMBV
-      secret-key: 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
-      root-access-key: AKIA442EBW2WH4TXKELQ
-      root-secret-key: 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
+      access-key: AKIA442EBW2WH4TXKELQ
+      secret-key: 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
     dynamodb:
       endpoint: https://dynamodb.ap-northeast-2.amazonaws.com
     region:
@@ -118,10 +116,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIA442EBW2WIV6SWMBV
-      secret-key: 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
-      root-access-key: AKIA442EBW2WH4TXKELQ
-      root-secret-key: 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
+      access-key: AKIA442EBW2WH4TXKELQ
+      secret-key: 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
     dynamodb:
       endpoint: https://dynamodb.ap-northeast-2.amazonaws.com
     region:

@@ -19,10 +19,10 @@ public class DynamoConfig {
     @Value("${cloud.aws.region.static}")
     private String awsRegion;
 
-    @Value("${cloud.aws.credentials.root-access-key}")
+    @Value("${cloud.aws.credentials.access-key}")
     private String dynamodbAccessKey;
 
-    @Value("${cloud.aws.credentials.root-secret-key}")
+    @Value("${cloud.aws.credentials.secret-key}")
     private String dynamodbSecretKey;
 
 
