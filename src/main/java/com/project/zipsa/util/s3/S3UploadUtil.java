@@ -1,6 +1,5 @@
 package com.project.zipsa.util.s3;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3UploadUtil {
 
-    private final AmazonS3Client amazonS3Client;
+    private final AWSS3 awss3;
     private final MessageSource messageSource;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -41,9 +39,6 @@ public class S3UploadUtil {
 
     @Value("${local.mac.dir-prefix}")
     private String macDirPrefix;
-
-    @Value("${uuid.length}")
-    private int uuidLen;
 
     public String upload(MultipartFile multipartFile) throws IOException {
         String changedFileName = getChangedFileName(multipartFile.getOriginalFilename());
@@ -66,12 +61,11 @@ public class S3UploadUtil {
     // S3로 업로드
     private String putS3(File uploadFile, String s3FileFullPath) {
         try {
-            amazonS3Client.putObject(new PutObjectRequest(bucket, s3FileFullPath, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-            return amazonS3Client.getUrl(bucket, s3FileFullPath).toString();
+            awss3.upload(bucket, new FileInputStream(uploadFile), s3FileFullPath, uploadFile.getName(), uploadFile.length());
         }catch(Exception e) {
             log.error("Upload File to S3 Error: {}", e.getMessage());
-            return null;
         }
+        return s3FileFullPath;
     }
 
     // 로컬에 파일 업로드 하기
