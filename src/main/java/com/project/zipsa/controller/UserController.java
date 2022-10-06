@@ -10,6 +10,7 @@ import com.project.zipsa.dto.user.*;
 import com.project.zipsa.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -129,7 +130,7 @@ public class UserController {
     }
 
     @PatchMapping(value = "/birth")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeBirthResponseDto> changeBirth(@RequestParam(name = "userBirth")LocalDate userBirth,
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ChangeBirthResponseDto> changeBirth(@RequestParam(name = "userBirth") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate userBirth,
                                                                        Principal principal) {
         LocalDate changedBirth = userService.changeUserBirth(userBirth, principal.getName());
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeBirthResponseDto(changedBirth));
