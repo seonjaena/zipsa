@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,28 +46,47 @@ public class S3UploadUtil {
     private int uuidLen;
 
     public String upload(MultipartFile multipartFile) throws IOException {
-        File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
+        String changedFileName = getChangedFileName(multipartFile.getOriginalFilename());
+        String tempFileFullPath = String.format("%s/%s", getLocalFilePath(), changedFileName);
+        String s3FileFullPath = String.format("%s/%s", dirPrefix, changedFileName);
+
+        File uploadFile = convert(multipartFile, tempFileFullPath)  // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException(messageSource.getMessage("error.user.change.profile", null, Locale.KOREA)));
 
-        return upload(uploadFile, dirPrefix);
+        return upload(uploadFile, s3FileFullPath);
     }
 
     // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
-        String fileName = getFileName(uploadFile.getName(), dirName);
-        putS3(uploadFile, fileName); // s3로 업로드
+    private String upload(File uploadFile, String s3FileFullPath) {
+        String fileURL = putS3(uploadFile, s3FileFullPath);
         removeNewFile(uploadFile);
-        return fileName;
-    }
-
-    private String getFileName(String fileName, String dirName) {
-        return String.format("%s/%s_%s", dirName, UUID.randomUUID(), fileName);
+        return fileURL;
     }
 
     // S3로 업로드
-    private void putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        amazonS3Client.getUrl(bucket, fileName);
+    private String putS3(File uploadFile, String s3FileFullPath) {
+        try {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, s3FileFullPath, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+            return amazonS3Client.getUrl(bucket, s3FileFullPath).toString();
+        }catch(Exception e) {
+            log.error("Upload File to S3 Error: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    // 로컬에 파일 업로드 하기
+    private Optional<File> convert(MultipartFile file, String changedFileFullPath) throws IOException {
+        File convertFile = new File(changedFileFullPath);
+        if (!convertFile.createNewFile()) {
+            removeNewFile(convertFile);
+            return Optional.empty();
+        }
+
+        try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+            fos.write(file.getBytes());
+        }
+
+        return Optional.of(convertFile);
     }
 
     // 로컬에 저장된 이미지 지우기
@@ -75,19 +96,6 @@ public class S3UploadUtil {
             return;
         }
         log.info("File delete fail");
-    }
-
-    // 로컬에 파일 업로드 하기
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(getLocalFilePath() + "/" + file.getOriginalFilename());
-        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-
-        return Optional.empty();
     }
 
     private String getLocalFilePath() {
@@ -104,6 +112,10 @@ public class S3UploadUtil {
         }else {
             return null;
         }
+    }
+
+    private String getChangedFileName(String fileName) {
+        return String.format("%s_%s_%s", System.currentTimeMillis(), UUID.randomUUID(), fileName);
     }
 
 }
