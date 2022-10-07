@@ -110,8 +110,8 @@ public class S3UploadUtil {
         return String.format("%s_%s_%s", System.currentTimeMillis(), UUID.randomUUID(), fileName);
     }
 
-    public String getFileURL(String s3FileFullPath, String originFileName) {
-        return awss3.getFileURL(s3FileFullPath, originFileName);
+    public String getFileURL(String s3FileFullPath) {
+        return awss3.getFileURL(s3FileFullPath);
     }
 
 }

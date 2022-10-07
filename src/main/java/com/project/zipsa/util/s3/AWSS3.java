@@ -69,13 +69,7 @@ public class AWSS3 {
         this.getAmazonS3().deleteObject(new DeleteObjectRequest(bucket, key));
     }
 
-    public String getFileURL(String s3FileFullPath, String originFileName) {
-
-        originFileName = new String(originFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-
-        ResponseHeaderOverrides responseHeader = new ResponseHeaderOverrides();
-        responseHeader.withContentType("application/octet-stream");
-        responseHeader.setContentDisposition("attachment; filename=" + originFileName + "; filename*=UTF-8''" + originFileName + ";");
+    public String getFileURL(String s3FileFullPath) {
 
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime() + 1000 * 60 * 5;
@@ -84,7 +78,6 @@ public class AWSS3 {
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(awsCredentials.getBucket(), s3FileFullPath)
                         .withMethod(HttpMethod.GET)
-                        .withResponseHeaders(responseHeader)
                         .withExpiration(expiration);
         return getAmazonS3().generatePresignedUrl(generatePresignedUrlRequest).toString();
     }

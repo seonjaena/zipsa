@@ -200,7 +200,7 @@ public class UserService {
         String savedFileName = s3UploadUtil.upload(profileImage);
         user.changeUserProfileImage(savedFileName);
         log.info("user profile image changed. profile = {}", savedFileName);
-        return s3UploadUtil.getFileURL(savedFileName, profileImage.getOriginalFilename());
+        return s3UploadUtil.getFileURL(savedFileName);
     }
 
     @Transactional
