@@ -1,14 +1,20 @@
 package com.project.zipsa.util.s3;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.project.zipsa.util.AWSCredentials;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 public class AWSS3 {
     private AmazonS3 amazonS3;
@@ -61,5 +67,25 @@ public class AWSS3 {
 
     public void delete(String bucket, String key) {
         this.getAmazonS3().deleteObject(new DeleteObjectRequest(bucket, key));
+    }
+
+    public String getFileURL(String s3FileFullPath, String originFileName) {
+
+        originFileName = new String(originFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+
+        ResponseHeaderOverrides responseHeader = new ResponseHeaderOverrides();
+        responseHeader.withContentType("application/octet-stream");
+        responseHeader.setContentDisposition("attachment; filename=" + originFileName + "; filename*=UTF-8''" + originFileName + ";");
+
+        Date expiration = new Date();
+        long expTimeMillis = expiration.getTime() + 1000 * 60 * 5;
+        expiration.setTime(expTimeMillis);
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                new GeneratePresignedUrlRequest(awsCredentials.getBucket(), s3FileFullPath)
+                        .withMethod(HttpMethod.GET)
+                        .withResponseHeaders(responseHeader)
+                        .withExpiration(expiration);
+        return getAmazonS3().generatePresignedUrl(generatePresignedUrlRequest).toString();
     }
 }

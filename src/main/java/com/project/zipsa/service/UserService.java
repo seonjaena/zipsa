@@ -15,15 +15,11 @@ import com.project.zipsa.repository.CheckCodeRepository;
 import com.project.zipsa.repository.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
-import com.project.zipsa.util.mq.RabbitMqUtil;
-import com.project.zipsa.util.s3.S3DeleteUtil;
 import com.project.zipsa.util.s3.S3UploadUtil;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,18 +38,13 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class UserService {
 
-    @Value("${uuid.length}")
-    private int uuidLen;
-
     private final UserRepository userRepository;
     private final CheckCodeRepository checkCodeRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final S3UploadUtil s3UploadUtil;
-    private final S3DeleteUtil s3DeleteUtil;
     private final MessageSource messageSource;
-    private final RabbitMqUtil rabbitMqUtil;
 
     private Users getUserNotDeleted(String userId) {
         return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
@@ -209,7 +200,7 @@ public class UserService {
         String savedFileName = s3UploadUtil.upload(profileImage);
         user.changeUserProfileImage(savedFileName);
         log.info("user profile image changed. profile = {}", savedFileName);
-        return savedFileName;
+        return s3UploadUtil.getFileURL(savedFileName, profileImage.getOriginalFilename());
     }
 
     @Transactional

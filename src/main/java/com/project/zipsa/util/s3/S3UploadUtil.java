@@ -1,7 +1,5 @@
 package com.project.zipsa.util.s3;
 
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +39,7 @@ public class S3UploadUtil {
     private String macDirPrefix;
 
     public String upload(MultipartFile multipartFile) throws IOException {
-        String changedFileName = getChangedFileName(multipartFile.getOriginalFilename());
+        String changedFileName = getChangedFileName(multipartFile.getOriginalFilename()).replace(" ", "_");
         String tempFileFullPath = String.format("%s/%s", getLocalFilePath(), changedFileName);
         String s3FileFullPath = String.format("%s/%s", dirPrefix, changedFileName);
 
@@ -110,6 +108,10 @@ public class S3UploadUtil {
 
     private String getChangedFileName(String fileName) {
         return String.format("%s_%s_%s", System.currentTimeMillis(), UUID.randomUUID(), fileName);
+    }
+
+    public String getFileURL(String s3FileFullPath, String originFileName) {
+        return awss3.getFileURL(s3FileFullPath, originFileName);
     }
 
 }

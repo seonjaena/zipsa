@@ -27,9 +27,12 @@ public class AWSConfig {
     @Value("${cloud.aws.dynamodb.endpoint}")
     private String dynamodbEndpoint;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
     @Bean
     public AWSCredentials awsCredentials() {
-        return new AWSCredentials(accessKey, secretKey, region);
+        return new AWSCredentials(accessKey, secretKey, bucket, region);
     }
 
     @Bean
