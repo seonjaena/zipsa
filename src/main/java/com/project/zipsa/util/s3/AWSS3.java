@@ -1,21 +1,17 @@
 package com.project.zipsa.util.s3;
 
 import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.project.zipsa.util.AWSCredentials;
-
-import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Slf4j
 public class AWSS3 {
     private AmazonS3 amazonS3;
     private AWSCredentials awsCredentials;
@@ -79,6 +75,8 @@ public class AWSS3 {
                 new GeneratePresignedUrlRequest(awsCredentials.getBucket(), s3FileFullPath)
                         .withMethod(HttpMethod.GET)
                         .withExpiration(expiration);
-        return getAmazonS3().generatePresignedUrl(generatePresignedUrlRequest).toString();
+        String preSignedURL = getAmazonS3().generatePresignedUrl(generatePresignedUrlRequest).toString();
+        log.info("pre-signed url = {}", preSignedURL);
+        return preSignedURL;
     }
 }
