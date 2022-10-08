@@ -32,4 +32,8 @@ public class GetMeResponseDto {
         this.userPhone = user.getUserPhone();
     }
 
+    public void getUserProfileImage(String imageURL) {
+        this.userProfileImage = imageURL;
+    }
+
 }

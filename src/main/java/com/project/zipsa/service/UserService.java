@@ -151,7 +151,10 @@ public class UserService {
     }
 
     public GetMeResponseDto getMyInfo(String userId) {
-        return new GetMeResponseDto(getUserNotDeleted(userId));
+        Users user = getUserNotDeleted(userId);
+        GetMeResponseDto userDto = new GetMeResponseDto(user);
+        userDto.getUserProfileImage(s3UploadUtil.getFileURL(user.getUserProfileImage()));
+        return userDto;
     }
 
     @Transactional
