@@ -1,10 +1,10 @@
-package com.project.zipsa.util.s3;
+package com.project.zipsa.util.aws.s3;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
-import com.project.zipsa.util.AWSCredentials;
+import com.project.zipsa.util.aws.AWSCredentials;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.InputStream;

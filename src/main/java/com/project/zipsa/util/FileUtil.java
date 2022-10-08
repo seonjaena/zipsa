@@ -1,5 +1,6 @@
-package com.project.zipsa.util.s3;
+package com.project.zipsa.util;
 
+import com.project.zipsa.util.aws.s3.AWSS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class S3UploadUtil {
+public class FileUtil {
 
     private final AWSS3 awss3;
     private final MessageSource messageSource;

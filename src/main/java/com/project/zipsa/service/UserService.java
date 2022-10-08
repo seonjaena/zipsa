@@ -15,7 +15,7 @@ import com.project.zipsa.repository.CheckCodeRepository;
 import com.project.zipsa.repository.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
-import com.project.zipsa.util.s3.S3UploadUtil;
+import com.project.zipsa.util.FileUtil;
 import com.project.zipsa.util.SMSUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final S3UploadUtil s3UploadUtil;
+    private final FileUtil fileUtil;
     private final MessageSource messageSource;
 
     private Users getUserNotDeleted(String userId) {
@@ -153,7 +153,7 @@ public class UserService {
     public GetMeResponseDto getMyInfo(String userId) {
         Users user = getUserNotDeleted(userId);
         GetMeResponseDto userDto = new GetMeResponseDto(user);
-        userDto.getUserProfileImage(s3UploadUtil.getFileURL(user.getUserProfileImage()));
+        userDto.getUserProfileImage(fileUtil.getFileURL(user.getUserProfileImage()));
         return userDto;
     }
 
@@ -200,10 +200,10 @@ public class UserService {
         String userProfileImage = user.getUserProfileImage();
         log.info("origin user profile image = {}", userProfileImage);
         log.info("new user profile image = {}", profileImage.getOriginalFilename());
-        String savedFileName = s3UploadUtil.upload(profileImage);
+        String savedFileName = fileUtil.upload(profileImage);
         user.changeUserProfileImage(savedFileName);
         log.info("user profile image changed. profile = {}", savedFileName);
-        return s3UploadUtil.getFileURL(savedFileName);
+        return fileUtil.getFileURL(savedFileName);
     }
 
     @Transactional

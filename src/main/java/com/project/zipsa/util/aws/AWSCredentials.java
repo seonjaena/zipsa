@@ -1,4 +1,4 @@
-package com.project.zipsa.util;
+package com.project.zipsa.util.aws;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
