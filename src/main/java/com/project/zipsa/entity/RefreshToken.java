@@ -12,9 +12,10 @@ import lombok.*;
 @DynamoDBTable(tableName = "REFRESH_TOKEN")
 public class RefreshToken {
 
-    @DynamoDBHashKey(attributeName = "REFRESH_TOKEN")
-    private String refreshToken;
-    @DynamoDBRangeKey(attributeName = "USER_ID")
+    @DynamoDBHashKey(attributeName = "USER_ID")
     private String userId;
+
+    @DynamoDBRangeKey(attributeName = "REFRESH_TOKEN")
+    private String refreshToken;
 
 }

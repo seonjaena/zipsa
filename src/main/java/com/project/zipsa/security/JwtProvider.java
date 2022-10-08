@@ -91,7 +91,9 @@ public class JwtProvider {
     // JWT의 유효성 및 만료일자 확인
     public boolean validationToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            if(parseClaims(token).getExpiration().before(new Date())) {
+                throw new JwtException("JWT Exception 토큰 만료");
+            }
             return true;
         }catch(JwtException | IllegalArgumentException e) {
             log.error("message = {}", e.getMessage());

@@ -65,14 +65,18 @@ public class UserService {
 
         TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), List.of(user.getUserRole().getText()));
 
-        tokenRepository.save(new RefreshToken(tokenDto.getRefreshToken(), user.getUserId()));
+        tokenRepository.delete(userId);
+        tokenRepository.save(new RefreshToken(user.getUserId(), tokenDto.getRefreshToken()));
 
         return new ResponseLoginDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
     public String refreshAccessToken(String refreshToken) {
-        Users user = getUserNotDeleted(tokenRepository.find(refreshToken).getUserId());
+        Users user = getUserNotDeleted(tokenRepository.findOneByToken(refreshToken).getUserId());
         try {
+            if(!jwtProvider.validationToken(refreshToken)) {
+                throw new RefreshTokenExpireException(messageSource.getMessage("error.jwt.refresh.expire", null, Locale.KOREA));
+            }
             return jwtProvider.refreshAccessToken(user.getUserId(), List.of(user.getUserRole().getText()));
         }catch(Exception e) {
             throw new RefreshTokenExpireException(messageSource.getMessage("error.jwt.refresh.expire", null, Locale.KOREA));
