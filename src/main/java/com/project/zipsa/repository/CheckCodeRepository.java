@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CheckCodeRepository extends JpaRepository<CheckCode, Long> {
-
-    Optional<CheckCode> findFirstByCheckCodeAndCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(String checkCode, CHECK_CODE_TYPE checkCodeType, String device);
+    Optional<CheckCode> findFirstByCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(CHECK_CODE_TYPE checkCodeType, String device);
 
 }

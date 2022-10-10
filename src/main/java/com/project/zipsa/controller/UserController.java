@@ -37,34 +37,11 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.refreshAccessToken(refreshToken));
     }
 
-    @GetMapping(value = "/join")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, List<JoinPageResponseDto>> getUserInfo() {
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.joinPage());
-    }
-
-    @PostMapping(value = "/join")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> join(@RequestBody JoinRequestDto joinRequestDto) {
-        userService.join(joinRequestDto);
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
-    }
-
     @GetMapping(value = "/phone")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> checkPhone(@RequestParam(name = "userPhone") String userPhone,
                                                                                       @RequestParam(name = "type") PHONE_CHECK_TYPE type) {
         userService.checkPhone(userPhone, type);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
-    }
-
-    @GetMapping(value = "/check/id")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkId(@RequestParam(name = "userId") String userId) {
-        boolean isAvailable = !userService.checkExistUserId(userId);
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
-    }
-
-    @GetMapping(value = "/check/nickname")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkNickname(@RequestParam(name = "userNickname") String userNickname) {
-        boolean isAvailable = !userService.checkExistNickname(userNickname);
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
     }
 
     @PostMapping(value = "/phone")
@@ -73,15 +50,39 @@ public class UserController {
         userService.checkPhoneCode(userPhone, code);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
+
+    @GetMapping(value = "/check/id")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkId(@RequestParam(name = "userId") String userId) {
+        boolean isAvailable = userService.checkExistUserId(userId);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
+    }
+
+    @GetMapping(value = "/check/nickname")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkNickname(@RequestParam(name = "userNickname") String userNickname) {
+        boolean isAvailable = userService.checkExistNickname(userNickname);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
+    }
+
+    @GetMapping(value = "/check/phone")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, CheckUserInfoAlreadyExistDto> checkUserPhone(@RequestParam(name = "userPhone") String userPhone) {
+        boolean isAvailable = userService.checkExistUserPhone(userPhone);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new CheckUserInfoAlreadyExistDto(isAvailable));
+    }
+
+    @PostMapping(value = "/join")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> join(@RequestBody JoinRequestDto joinRequestDto) {
+        userService.join(joinRequestDto);
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
+    }
     
     @PostMapping(value = "/find/id")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> findId(@RequestBody FindIdRequestDto findIdRequestDto) {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.findId(findIdRequestDto));
     }
 
-    @PostMapping(value = "/find/pw")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> findPw(@RequestBody FindPwRequestDto findPwRequestDto) {
-        userService.findPw(findPwRequestDto);
+    @PostMapping(value = "/check/info")
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> checkInfo(@RequestBody CheckInfoRequestDto checkInfoRequestDto) {
+        userService.checkInfo(checkInfoRequestDto);
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
@@ -91,6 +92,7 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, GENERAL_SUCCESS_DETAIL.NULL);
     }
 
+    // 나중에
     @PatchMapping(value = "/pw_logined")
     public GeneralResponseDto<GENERAL_STATUS_ENUM, GENERAL_SUCCESS_DETAIL> changePwLogined(@RequestBody ChangePwLoginedRequestDto changePwRequestDto,
                                                                                            Principal principal) {

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindPwRequestDto {
+public class CheckInfoRequestDto {
 
     private String userId;
     private String userName;

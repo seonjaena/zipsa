@@ -83,12 +83,6 @@ public class UserService {
         }
     }
 
-    public List<JoinPageResponseDto> joinPage() {
-        return userRepository.findAll().stream()
-                .map(u -> new JoinPageResponseDto(u.getUserId(), u.getUserNickname()))
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public void join(JoinRequestDto joinRequestDto) {
         joinRequestDto.setUserPw(passwordEncoder.encode(joinRequestDto.getUserPw()));
@@ -108,17 +102,21 @@ public class UserService {
     }
 
     public boolean checkExistUserId(String userId) {
-        return userRepository.existsByUserId(userId);
+        return !userRepository.existsByUserId(userId);
     }
 
     public boolean checkExistNickname(String userNickname) {
-        return userRepository.existsByUserNickname(userNickname);
+        return !userRepository.existsByUserNickname(userNickname);
+    }
+
+    public boolean checkExistUserPhone(String userPhone) {
+        return !userRepository.existsByUserPhone(userPhone);
     }
 
     public void checkPhoneCode(String userPhone, String code) {
-        boolean isValid = checkCodeRepository.findFirstByCheckCodeAndCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(
-                code, CHECK_CODE_TYPE.PHONE, userPhone).isPresent();
-        if(!isValid) {
+        CheckCode checkCode = checkCodeRepository.findFirstByCheckCodeTypeAndDeviceOrderByCheckCodeIdxDesc(CHECK_CODE_TYPE.PHONE, userPhone)
+                .orElseThrow(() -> new BadValidDeviceCodeException(messageSource.getMessage("error.user.phone.check.code", null, Locale.KOREA)));
+        if(!checkCode.getCheckCode().equals(code)) {
             throw new BadValidDeviceCodeException(messageSource.getMessage("error.user.phone.check.code", null, Locale.KOREA));
         }
     }
@@ -132,16 +130,18 @@ public class UserService {
         return user.getUserId();
     }
 
-    public void findPw(FindPwRequestDto findPwRequestDto) {
-        validateUserPhone(findPwRequestDto.getUserPhone());
+    public void checkInfo(CheckInfoRequestDto checkInfoRequestDto) {
         userRepository.findByUserNameAndUserStatusAndUserBirthAndUserPhoneAndUserId(
-                        findPwRequestDto.getUserName(), USER_STATUS.NORMAL, findPwRequestDto.getUserBirth(),
-                        findPwRequestDto.getUserPhone(), findPwRequestDto.getUserId())
+                        checkInfoRequestDto.getUserName(), USER_STATUS.NORMAL, checkInfoRequestDto.getUserBirth(),
+                        checkInfoRequestDto.getUserPhone(), checkInfoRequestDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
     }
 
     @Transactional
     public void changePwUnlogined(ChangePwUnloginedRequestDto changePwRequestDto) {
+        if(!changePwRequestDto.getNewPw1().equals(changePwRequestDto.getNewPw2())) {
+            throw new NewPwNotSameException(messageSource.getMessage("error.user.pw1pw2.notsame", null, Locale.KOREA));
+        }
         Users user = userRepository.findByUserIdAndUserStatus(changePwRequestDto.getUserId(), USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
         user.changePw(passwordEncoder.encode(changePwRequestDto.getNewPw1()));
@@ -149,8 +149,14 @@ public class UserService {
 
     @Transactional
     public void changePwLogined(String userId, ChangePwLoginedRequestDto changePwRequestDto) {
+        if(!changePwRequestDto.getNewPw1().equals(changePwRequestDto.getNewPw2())) {
+            throw new NewPwNotSameException(messageSource.getMessage("error.user.pw1pw2.notsame", null, Locale.KOREA));
+        }
         Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
+        if(!passwordEncoder.matches(changePwRequestDto.getCurPw(), user.getUserPw())) {
+            throw new UnAuthenticatedException(messageSource.getMessage("error.user.info", null, Locale.KOREA));
+        }
         user.changePw(passwordEncoder.encode(changePwRequestDto.getNewPw1()));
     }
 
@@ -187,6 +193,7 @@ public class UserService {
 
     @Transactional
     public String changeUserPhone(String userPhone, String userId) {
+        validateUserPhone(userPhone);
         getUserNotDeleted(userId).changeUserPhone(userPhone);
         return userPhone;
     }
@@ -223,8 +230,7 @@ public class UserService {
     }
 
     private void checkUserPhoneDuplicate(String phone) {
-        boolean isDuplicate = userRepository.findByUserPhone(phone).isPresent();
-        if(isDuplicate) {
+        if (userRepository.existsByUserId(phone)) {
             throw new DuplicateUserPhoneException(messageSource.getMessage("error.user.phone.duplicate", null, Locale.KOREA));
         }
     }
