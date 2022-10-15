@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private static final String BASIC_PROFILE_IMAGE = "basic_null_profile.png";
+
     private final UserRepository userRepository;
     private final CheckCodeRepository checkCodeRepository;
     private final TokenRepository tokenRepository;
@@ -164,7 +166,9 @@ public class UserService {
         Users user = getUserNotDeleted(userId);
         GetMeResponseDto userDto = new GetMeResponseDto(user);
         if(userDto.getUserProfileImage() == null || userDto.getUserProfileImage().trim().isEmpty()) {
-            userDto.getUserProfileImage(fileUtil.getFileURL(user.getUserProfileImage()));
+            userDto.makeUserProfileImage(fileUtil.getFileURL(BASIC_PROFILE_IMAGE));
+        }else {
+            userDto.makeUserProfileImage(fileUtil.getFileURL(user.getUserProfileImage()));
         }
         return userDto;
     }
