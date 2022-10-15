@@ -154,6 +154,9 @@ public class UserService {
         if(!changePwRequestDto.getNewPw1().equals(changePwRequestDto.getNewPw2())) {
             throw new NewPwNotSameException(messageSource.getMessage("error.user.pw1pw2.notsame", null, Locale.KOREA));
         }
+        if(changePwRequestDto.getCurPw().equals(changePwRequestDto.getNewPw1())) {
+            throw new NewPwCurPwSameException(messageSource.getMessage("error.user.curnewpw.same", null, Locale.KOREA));
+        }
         Users user = userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UserNotFoundException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
         if(!passwordEncoder.matches(changePwRequestDto.getCurPw(), user.getUserPw())) {
