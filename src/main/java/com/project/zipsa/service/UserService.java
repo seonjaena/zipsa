@@ -163,7 +163,9 @@ public class UserService {
     public GetMeResponseDto getMyInfo(String userId) {
         Users user = getUserNotDeleted(userId);
         GetMeResponseDto userDto = new GetMeResponseDto(user);
-        userDto.getUserProfileImage(fileUtil.getFileURL(user.getUserProfileImage()));
+        if(userDto.getUserProfileImage() == null || userDto.getUserProfileImage().trim().isEmpty()) {
+            userDto.getUserProfileImage(fileUtil.getFileURL(user.getUserProfileImage()));
+        }
         return userDto;
     }
 
