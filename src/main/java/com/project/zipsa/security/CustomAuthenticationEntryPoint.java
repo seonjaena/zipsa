@@ -32,7 +32,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        String result = objectMapper.writeValueAsString(new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, messageSource.getMessage("error.jwt.refresh.expire", null, Locale.KOREA)));
+        String result = objectMapper.writeValueAsString(new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, messageSource.getMessage("error.jwt.access.expire", null, Locale.KOREA)));
 
         response.getWriter().write(result);
     }
