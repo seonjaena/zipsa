@@ -152,14 +152,4 @@ public class UserController {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, new ChangeIdResponseDto(changedUserId));
     }
 
-    @PutMapping(value = "/puttest")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> a(Principal principal) {
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, "this is put test");
-    }
-    @PostMapping(value = "/posttest")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, String> b(Principal principal) {
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, "this is post test");
-    }
-
-
 }

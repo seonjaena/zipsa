@@ -56,8 +56,6 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/user").hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/api/user/alert", "/api/user/nickname", "/api/user/phone", "/api/user/birth", "/api/user/profile", "/api/user/id").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/api/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/api/user/posttest").hasRole("USER")
-                .antMatchers(HttpMethod.PUT, "/api/user/puttest").hasRole("USER")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .and()
                 .exceptionHandling()
