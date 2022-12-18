@@ -4,9 +4,7 @@ import com.project.zipsa.dto.room.RoomDetailInfoResponseDto;
 import com.project.zipsa.dto.room.RoomInfoResponseDto;
 import com.project.zipsa.entity.Room;
 import com.project.zipsa.entity.Users;
-import com.project.zipsa.entity.enums.USER_STATUS;
 import com.project.zipsa.exception.custom.NoSuchRoomException;
-import com.project.zipsa.exception.custom.UnAuthenticatedException;
 import com.project.zipsa.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

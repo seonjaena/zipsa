@@ -2,7 +2,6 @@ package com.project.zipsa.controller;
 
 import com.project.zipsa.dto.GeneralResponseDto;
 import com.project.zipsa.dto.enums.GENERAL_STATUS_ENUM;
-import com.project.zipsa.dto.enums.GENERAL_SUCCESS_DETAIL;
 import com.project.zipsa.dto.room.RoomDetailInfoResponseDto;
 import com.project.zipsa.dto.room.RoomInfoResponseDto;
 import com.project.zipsa.service.RoomService;
