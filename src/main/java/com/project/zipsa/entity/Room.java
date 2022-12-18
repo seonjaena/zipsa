@@ -1,11 +1,9 @@
 package com.project.zipsa.entity;
 
-import com.project.zipsa.entity.Users;
 import com.project.zipsa.entity.common.AuditUser;
 import com.project.zipsa.entity.enums.ROOM_CONTRACT_TYPE;
 import com.project.zipsa.entity.enums.ROOM_STATUS;
 import com.project.zipsa.entity.enums.ROOM_TYPE;
-import com.project.zipsa.entity.enums.USER_ROLE;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,11 +51,24 @@ public class Room extends AuditUser {
     @Column(name = "ROOM_CONTRACT_TERM")
     private LocalDate roomContractTerm;
 
-    @Column(name = "BUILDING_NAME")
-    private String buildingName;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BUILDING_IDX")
     private Building building;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TENANT_IDX")
+    private Users tenant;
+
+    public static Room of(Integer roomNumber, ROOM_CONTRACT_TYPE roomContractType, Integer roomPrice, Integer roomDeposit, ROOM_TYPE roomType, Building building) {
+        Room room = new Room();
+        room.setRoomNumber(roomNumber);
+        room.setRoomContractType(roomContractType);
+        room.setRoomPrice(roomPrice);
+        room.setRoomDeposit(roomDeposit);
+        room.setRoomType(roomType);
+        room.setRoomStatus(ROOM_STATUS.EMPTY);
+        room.setBuilding(building);
+        return room;
+    }
 
 }

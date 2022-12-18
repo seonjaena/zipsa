@@ -48,7 +48,7 @@ public class UserService {
     private final FileUtil fileUtil;
     private final MessageSource messageSource;
 
-    private Users getUserNotDeleted(String userId) {
+    public Users getUserNotDeleted(String userId) {
         return userRepository.findByUserIdAndUserStatus(userId, USER_STATUS.NORMAL)
                 .orElseThrow(() -> new UnAuthenticatedException(messageSource.getMessage("error.user.info", null, Locale.KOREA)));
     }
