@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.web;
+package com.project.zipsa.integration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles(profiles = {"test"})
 @SpringBootTest
 @AutoConfigureMockMvc
-public class HealthCheckControllerTest {
+public class HealthCheckTest {
 
     @Autowired
     private MockMvc mockMvc;
