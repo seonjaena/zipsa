@@ -9,6 +9,7 @@ import com.project.zipsa.util.aws.s3.AWSS3;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class AWSConfig {
@@ -39,6 +40,7 @@ public class AWSConfig {
     }
 
     @Bean
+    @Profile({"dev", "prod"})
     public DynamoDBMapper dynamoDBMapper() {
         return new DynamoDBMapper(buildAmazonDynamoDB());
     }

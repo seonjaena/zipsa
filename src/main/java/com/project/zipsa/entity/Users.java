@@ -4,10 +4,7 @@ import com.project.zipsa.dto.user.JoinRequestDto;
 import com.project.zipsa.entity.common.AuditDateTime;
 import com.project.zipsa.entity.enums.USER_ROLE;
 import com.project.zipsa.entity.enums.USER_STATUS;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder(builderMethodName = "innerBuild")
 public class Users extends AuditDateTime {
 
     @Id
@@ -66,23 +65,36 @@ public class Users extends AuditDateTime {
     @Column(name = "USER_TOKEN_DATETIME")
     private LocalDateTime userTokenDatetime;
 
-    public Users(JoinRequestDto joinRequestDto) {
-        this.userId = joinRequestDto.getUserId();
-        this.userPw = joinRequestDto.getUserPw();
-        this.userName = joinRequestDto.getUserName();
-        this.userNickname = joinRequestDto.getUserNickname();
-        this.userBirth = joinRequestDto.getUserBirth();
-        this.isAlert = joinRequestDto.getIsAlert();
-        this.userPhone = joinRequestDto.getUserPhone();
-        this.isChangePwRequired = false;
-        this.userRole = USER_ROLE.USER;
-        this.userStatus = USER_STATUS.NORMAL;
-        this.userToken = joinRequestDto.getUserToken();
-        this.userTokenDatetime = LocalDateTime.now();
+    public static UsersBuilder builder(String userId, String userPw, String userName,
+                                       String userNickname, LocalDate userBirth, Boolean isAlert, String userPhone) {
+        return innerBuild()
+                .userId(userId)
+                .userPw(userPw)
+                .userName(userName)
+                .userNickname(userNickname)
+                .userBirth(userBirth)
+                .isAlert(isAlert)
+                .userPhone(userPhone)
+                .isChangePwRequired(false)
+                .userRole(USER_ROLE.USER)
+                .userStatus(USER_STATUS.NORMAL);
     }
 
     public static Users from(JoinRequestDto joinRequestDto) {
-        return new Users(joinRequestDto);
+        Users users = new Users();
+        users.userId = joinRequestDto.getUserId();
+        users.userPw = joinRequestDto.getUserPw();
+        users.userName = joinRequestDto.getUserName();
+        users.userNickname = joinRequestDto.getUserNickname();
+        users.userBirth = joinRequestDto.getUserBirth();
+        users.isAlert = joinRequestDto.getIsAlert();
+        users.userPhone = joinRequestDto.getUserPhone();
+        users.isChangePwRequired = false;
+        users.userRole = USER_ROLE.USER;
+        users.userStatus = USER_STATUS.NORMAL;
+        users.userToken = joinRequestDto.getUserToken();
+        users.userTokenDatetime = LocalDateTime.now();
+        return users;
     }
 
     public void changeAlert(boolean isAlert) {

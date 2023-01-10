@@ -102,7 +102,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public GeneralResponseDto<GENERAL_STATUS_ENUM, String> unknownException(Exception e) {
         log.error("message = {}", e.getMessage());
-        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, messageSource.getMessage("error.system.unknown", null, Locale.KOREA));
+        return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.FAIL, messageSource.getMessage(e.getMessage(), null, Locale.KOREA));
     }
 
 }
