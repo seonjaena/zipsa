@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.common;
+package com.project.zipsa.common;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;

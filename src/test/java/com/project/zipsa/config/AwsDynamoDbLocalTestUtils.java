@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.config;
+package com.project.zipsa.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;

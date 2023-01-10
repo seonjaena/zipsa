@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.config;
+package com.project.zipsa.config;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;

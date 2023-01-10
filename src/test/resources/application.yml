@@ -5,13 +5,14 @@ spring:
       on-profile: test
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: admin
-    password: Na6080su12!!
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
       naming:

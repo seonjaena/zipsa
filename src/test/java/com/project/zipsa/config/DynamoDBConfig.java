@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.config;
+package com.project.zipsa.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

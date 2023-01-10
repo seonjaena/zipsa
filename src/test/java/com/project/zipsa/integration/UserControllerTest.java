@@ -1,9 +1,9 @@
-package com.project.zipsa.unit.web;
+package com.project.zipsa.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipsa.dto.auth.LoginRequestDto;
-import com.project.zipsa.unit.common.TestReady;
-import com.project.zipsa.unit.custom.annotation.AllConfigTestAnnotation;
+import com.project.zipsa.common.TestReady;
+import com.project.zipsa.custom.annotation.AllConfigTestAnnotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

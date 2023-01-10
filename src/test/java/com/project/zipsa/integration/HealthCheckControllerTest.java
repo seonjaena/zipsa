@@ -1,6 +1,6 @@
-package com.project.zipsa.unit.web;
+package com.project.zipsa.integration;
 
-import com.project.zipsa.unit.custom.annotation.AllConfigTestAnnotation;
+import com.project.zipsa.custom.annotation.AllConfigTestAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class HealthCheckControllerTest {
     @Test
     void taskHealthCheck200() throws Exception {
         this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .get("/api/healthcheck/task")
-                        .header("Authorization", "Bearer ")
+                        MockMvcRequestBuilders
+                                .get("/api/healthcheck/task")
+                                .header("Authorization", "Bearer ")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

@@ -1,8 +1,8 @@
-package com.project.zipsa.unit.custom.annotation;
+package com.project.zipsa.custom.annotation;
 
-import com.project.zipsa.unit.common.TestReady;
-import com.project.zipsa.unit.config.DynamoDBConfig;
-import com.project.zipsa.unit.config.EmbeddedDynamoDBConfig;
+import com.project.zipsa.common.TestReady;
+import com.project.zipsa.config.DynamoDBConfig;
+import com.project.zipsa.config.EmbeddedDynamoDBConfig;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
