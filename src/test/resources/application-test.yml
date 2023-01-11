@@ -5,14 +5,12 @@ spring:
       on-profile: test
 
   datasource:
-    url: jdbc:h2:mem:test;MODE=MySQL;
-    username: sa
-    password:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     driver-class-name: org.h2.Driver
 
   jpa:
     database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create-drop
       naming:
@@ -50,3 +48,11 @@ token:
   access-expire: 1800000
   # 1일 (1000 * 60 * 24 = 1440000) / 1달 (1000 * 60 * 24 * 31 = 44640000)
   refresh-expire: 1440000
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+  config: classpath:logback-spring.xml

@@ -19,7 +19,7 @@ public class Payment extends AuditDateTime {
     private Long paymentIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_IDX")
+    @JoinColumn(name = "ROOM_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Room roomIdx;
 
     @Column(name = "IS_CONFIRMED")

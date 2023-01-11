@@ -20,18 +20,19 @@ public class Comment {
     private Long commentIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOARD_IDX")
+    @JoinColumn(name = "BOARD_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMMENT_REPLY_IDX")
+    @JoinColumn(name = "COMMENT_REPLY_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Comment commentReply;
 
-    @Column(name = "COMMENT_CONTENT", columnDefinition = "MEDIUMTEXT")
+    @Lob
+    @Column(name = "COMMENT_CONTENT")
     private String commentContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WRITER_IDX")
+    @JoinColumn(name = "WRITER_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Users writer;
 
 }

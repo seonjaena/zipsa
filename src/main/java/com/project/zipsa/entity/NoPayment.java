@@ -22,7 +22,7 @@ public class NoPayment extends AuditDateTime {
     private Long noPaymentIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_IDX")
+    @JoinColumn(name = "ROOM_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Room roomIdx;
 
     @Column(name = "BASIS_DATE")

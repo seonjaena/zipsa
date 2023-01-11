@@ -20,7 +20,7 @@ public class Building {
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BUILDING_MASTER_IDX")
+    @JoinColumn(name = "BUILDING_MASTER_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Users buildingMaster;
 
     @Column(name = "BUILDING_LOCATION")

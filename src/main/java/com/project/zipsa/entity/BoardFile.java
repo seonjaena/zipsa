@@ -20,7 +20,7 @@ public class BoardFile {
     private Long boardFileIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOARD_IDX")
+    @JoinColumn(name = "BOARD_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Board board;
 
     @Column(name = "SAVE_FILE_NAME")

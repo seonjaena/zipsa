@@ -52,11 +52,11 @@ public class Room extends AuditUser {
     private LocalDate roomContractTerm;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BUILDING_IDX")
+    @JoinColumn(name = "BUILDING_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Building building;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TENANT_IDX")
+    @JoinColumn(name = "TENANT_IDX", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Users tenant;
 
     public static Room of(Integer roomNumber, ROOM_CONTRACT_TYPE roomContractType, Integer roomPrice, Integer roomDeposit, ROOM_TYPE roomType, Building building) {
