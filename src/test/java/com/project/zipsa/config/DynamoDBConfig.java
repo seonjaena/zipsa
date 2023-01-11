@@ -8,12 +8,19 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
 public class DynamoDBConfig {
+
+    @Value("#{ '${cloud.aws.dynamodb.endpoint}' }")
+    private String dynamoEndpoint;
+
+    @Value("#{ '${cloud.aws.dynamodb.region}' }")
+    private String dynamoRegion;
 
     @Bean
     @Primary
@@ -27,8 +34,7 @@ public class DynamoDBConfig {
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials("testId", "testAccessKey");
         return AmazonDynamoDBClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000"
-                        , Regions.AP_NORTHEAST_1.getName()))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(dynamoEndpoint, dynamoRegion))
                 .build();
     }
 
