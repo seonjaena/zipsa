@@ -8,7 +8,6 @@ import com.project.zipsa.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +31,6 @@ public class TestReady {
     private static final String USER_PW = "Test-user-pwd-12-!@";
     private static final LocalDate USER_BIRTH = LocalDate.of(1998, 5, 22);
 
-    @Transactional
     public void ready() {
         addTestUser();
 

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
-@Transactional(readOnly = true)
+@Transactional
 @AllConfigTestAnnotation
 public class HealthCheckControllerTest {
 
