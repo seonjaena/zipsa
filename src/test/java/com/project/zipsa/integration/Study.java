@@ -60,7 +60,6 @@ public class Study {
         given(jwtProvider.createToken(any(), any())).willReturn(tokenDto);
         willDoNothing().given(tokenRepository).delete(any());
         willDoNothing().given(tokenRepository).save(any());
-        BDDMockito.inOrder()
         userService.login("test-user", "test-user-pwd");
         then(passwordEncoder).should(times(1)).matches(any(), any());
     }
