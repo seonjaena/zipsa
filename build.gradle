@@ -77,6 +77,8 @@ dependencies {
 	implementation 'com.amazonaws:DynamoDBLocal:1.11.119'
 
 	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.ws:spring-ws-test'
 	testImplementation 'com.h2database:h2'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.3.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
