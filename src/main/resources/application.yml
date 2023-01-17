@@ -69,6 +69,24 @@ spring:
         format_sql: true
     open-in-view: false
 
+  rabbitmq:
+    host: 144.24.83.179
+    port: 5672
+    virtualhost: /
+    username: sky114z
+    password: na6080su12!@
+    dead-log-queue: dead-log-queue
+    dead-log-exchange: dead-log-exchange
+    dead-log-routingkey: dead-log-queue
+    log-queue: log-queue
+    log-exchange: log-exchange
+    log-routingkey: log-queue
+
+  redis:
+    host: 144.24.83.179
+    port: 6379
+    password: na6080su12!@
+
 cloud:
   aws:
     credentials:
@@ -109,6 +127,24 @@ spring:
         default_batch_fetch_size: 100
         show_sql: true
     open-in-view: false
+
+  rabbitmq:
+    host: 144.24.83.179
+    port: 5672
+    virtualhost: /
+    username: sky114z
+    password: na6080su12!@
+    dead-log-queue: dead-log-queue
+    dead-log-exchange: dead-log-exchange
+    dead-log-routingkey: dead-log-queue
+    log-queue: log-queue
+    log-exchange: log-exchange
+    log-routingkey: log-queue
+
+  redis:
+    host: 144.24.83.179
+    port: 6379
+    password: na6080su12!@
 
 cloud:
   aws:

@@ -21,6 +21,24 @@ spring:
         show_sql: true
     open-in-view: false
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtualhost: /
+    username: sky114z
+    password: na6080su12!@
+    dead-log-queue: dead-log-queue
+    dead-log-exchange: dead-log-exchange
+    dead-log-routingkey: dead-log-queue
+    log-queue: log-queue
+    log-exchange: log-exchange
+    log-routingkey: log-queue
+
+  redis:
+    host: localhost
+    port: 6379
+    password: none
+
 cloud:
   aws:
     dynamodb:

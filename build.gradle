@@ -75,8 +75,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
 	implementation 'com.google.firebase:firebase-admin:9.0.0'
 	implementation 'com.amazonaws:DynamoDBLocal:1.11.119'
+	implementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
 
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.ws:spring-ws-test'
 	testImplementation 'com.h2database:h2'

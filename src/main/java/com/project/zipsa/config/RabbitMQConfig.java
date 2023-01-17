@@ -1,32 +1,34 @@
 package com.project.zipsa.config;
 
 import com.rabbitmq.client.ConnectionFactory;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(value = "classpath:rabbitmq.yml", factory = YamlPropertySourceFactory.class)
-@ConfigurationProperties(prefix = "rabbitmq")
-@Getter
-@Setter
+@EnableRabbit
 public class RabbitMQConfig {
 
+    @Value("${spring.rabbitmq.host}")
     private String host;
+    @Value("${spring.rabbitmq.port}")
     private int port;
+    @Value("${spring.rabbitmq.username}")
     private String username;
+    @Value("${spring.rabbitmq.password}")
     private String password;
+    @Value("${spring.rabbitmq.log-exchange}")
     private String logExchange;
+    @Value("${spring.rabbitmq.log-queue}")
     private String logQueue;
+    @Value("${spring.rabbitmq.log-routingkey}")
     private String routingKey;
 
     @Bean
