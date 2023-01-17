@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.mq;
+package com.project.zipsa.unit.redis;
 
 import com.project.zipsa.config.AWSConfig;
 import com.project.zipsa.config.RedisConfig;

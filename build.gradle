@@ -83,7 +83,7 @@ dependencies {
 	testImplementation 'com.h2database:h2'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.3.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	implementation 'org.springframework.amqp:spring-rabbit-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	// https://mvnrepository.com/artifact/com.amazonaws/DynamoDBLocal
 }
