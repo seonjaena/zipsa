@@ -78,7 +78,7 @@ dependencies {
 	implementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
 
 	annotationProcessor 'org.projectlombok:lombok'
-
+	testImplementation 'com.github.fridujo:rabbitmq-mock:1.2.0'
 	testImplementation 'org.springframework.ws:spring-ws-test'
 	testImplementation 'com.h2database:h2'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.3.1'
