@@ -1,5 +1,6 @@
 package com.project.zipsa.config;
 
+import com.project.zipsa.util.mq.MessageListener;
 import com.rabbitmq.client.Channel;
 import org.mockito.BDDMockito;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -70,6 +71,18 @@ public class MockRabbitMQConfig {
         container.setQueueNames(dlq, queue);
         container.setMessageListener(listenerAdapter);
         return container;
+    }
+
+    @Bean
+    public MessageListenerAdapter listenerAdapter(MessageListener listener) {
+        MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(listener, "handleMessage");
+        messageListenerAdapter.setDefaultListenerMethod("handleMessage"); // 실행할 메소드 지정.
+        return messageListenerAdapter;
+    }
+
+    @Bean
+    public MessageListener listener() {
+        return new MessageListener();
     }
 
 }

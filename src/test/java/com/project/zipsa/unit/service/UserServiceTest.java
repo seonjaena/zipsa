@@ -27,7 +27,6 @@ import static org.mockito.BDDMockito.*;
 
 @DisplayName("사용자 서비스 레이어 유닛 테스트")
 @ExtendWith(MockitoExtension.class)
-@ImportAutoConfiguration(exclude = {})
 public class UserServiceTest {
 
     @Mock
