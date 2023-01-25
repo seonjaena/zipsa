@@ -28,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(MockRabbitMQConfig.class)
 public class MQTest02 {
 
-    private static final String QUEUE_NAME = UUID.randomUUID().toString();
+    private static final String QUEUE_NAME1 = UUID.randomUUID().toString();
+    private static final String QUEUE_NAME2 = UUID.randomUUID().toString();
     private static final String EXCHANGE_NAME = UUID.randomUUID().toString();
 
     @Test
@@ -36,11 +37,28 @@ public class MQTest02 {
         String messageBody = "Hello World!";
         try(AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MockRabbitMQConfig.class)) {
             RabbitTemplate rabbitTemplate = queueAndExchangeSetup(context);
-            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.key1", messageBody);
-            Message message = rabbitTemplate.receive(QUEUE_NAME);
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test1.key1", messageBody);
+            Message message = rabbitTemplate.receive(QUEUE_NAME1);
 
             assertThat(message).isNotNull();
             assertThat(message.getBody()).isEqualTo(messageBody.getBytes());
+        }
+    }
+
+    @Test
+    void basic_get_topic() {
+        String messageBody = "Hello World!";
+        try(AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MockRabbitMQConfig.class)) {
+            RabbitTemplate rabbitTemplate = queueAndExchangeSetup(context);
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test1.key1", messageBody + "1");
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test2.key1", messageBody + "2");
+            Message message1 = rabbitTemplate.receive(QUEUE_NAME1);
+            Message message2 = rabbitTemplate.receive(QUEUE_NAME2);
+
+            assertThat(message1).isNotNull();
+            assertThat(message1.getBody()).isEqualTo((messageBody + 1).getBytes());
+            assertThat(message2).isNotNull();
+            assertThat(message2.getBody()).isEqualTo((messageBody + 2).getBytes());
         }
     }
 
@@ -53,12 +71,12 @@ public class MQTest02 {
             Receiver receiver = new Receiver();
             SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
             container.setConnectionFactory(context.getBean(ConnectionFactory.class));
-            container.setQueueNames(QUEUE_NAME);
+            container.setQueueNames(QUEUE_NAME1);
             container.setMessageListener(new MessageListenerAdapter(receiver, "receiveMessage"));
             try {
                 container.start();
 
-                rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.key2", messageBody);
+                rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test1.key2", messageBody);
 
                 List<String> receivedMessages = new ArrayList<>();
                 assertTimeoutPreemptively(Duration.ofMillis(500L), () -> {
@@ -84,14 +102,14 @@ public class MQTest02 {
             Receiver receiver = new Receiver();
             SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
             container.setConnectionFactory(context.getBean(ConnectionFactory.class));
-            container.setQueueNames(QUEUE_NAME);
+            container.setQueueNames(QUEUE_NAME1);
             container.setMessageListener(new MessageListenerAdapter(receiver, "receiveMessageAndReply"));
 
             try {
                 container.start();
                 asyncRabbitTemplate.start();
 
-                AsyncRabbitTemplate.RabbitConverterFuture<Object> result = asyncRabbitTemplate.convertSendAndReceive(EXCHANGE_NAME, "test.key2", messageBody);
+                AsyncRabbitTemplate.RabbitConverterFuture<Object> result = asyncRabbitTemplate.convertSendAndReceive(EXCHANGE_NAME, "test1.key2", messageBody);
 
                 assertThat(result.get()).isEqualTo(new StringBuilder(messageBody).reverse().toString());
                 assertThat(receiver.getMessages()).containsExactly(messageBody);
@@ -106,11 +124,14 @@ public class MQTest02 {
     private RabbitTemplate queueAndExchangeSetup(BeanFactory context) {
         RabbitAdmin rabbitAdmin = context.getBean(RabbitAdmin.class);
 
-        Queue queue = new Queue(QUEUE_NAME, false);
-        rabbitAdmin.declareQueue(queue);
+        Queue queue1 = new Queue(QUEUE_NAME1, false);
+        Queue queue2 = new Queue(QUEUE_NAME2, false);
+        rabbitAdmin.declareQueue(queue1);
+        rabbitAdmin.declareQueue(queue2);
         TopicExchange exchange = new TopicExchange(EXCHANGE_NAME);
         rabbitAdmin.declareExchange(exchange);
-        rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("test.*"));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with("test1.*"));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with("test2.*"));
         return context.getBean(RabbitTemplate.class);
     }
 

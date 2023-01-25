@@ -4,6 +4,7 @@ import com.github.fridujo.rabbitmq.mock.compatibility.MockConnectionFactoryFacto
 import com.github.fridujo.rabbitmq.mock.exchange.MockExchangeCreator;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -14,7 +15,7 @@ public class MockRabbitMQConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory(
+        return new PooledChannelConnectionFactory(
                 MockConnectionFactoryFactory
                         .build()
                         .enableConsistentHashPlugin()
