@@ -1,6 +1,5 @@
-package com.project.zipsa.unit.redis;
+package com.project.zipsa.unit.redis.ozimov;
 
-import com.project.zipsa.config.AWSConfig;
 import com.project.zipsa.config.RedisConfig;
 import com.project.zipsa.custom.annotation.AllConfigTestAnnotation;
 import com.project.zipsa.entity.Point;
@@ -9,12 +8,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.HyperLogLogOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.ActiveProfiles;
-
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -34,7 +30,7 @@ public class RedisTest {
 
     @Test
     public void 기본_등록_조회기능() {
-        String id = "jojoldu";
+        String id = "sjna";
         LocalDateTime refreshTime = LocalDateTime.of(2018, 5, 26, 0, 0);
         Point point = Point.builder()
                 .id(id)
@@ -51,7 +47,7 @@ public class RedisTest {
 
     @Test
     public void 수정기능() {
-        String id = "jodoldu";
+        String id = "sjna";
         LocalDateTime refreshTime = LocalDateTime.of(2018, 5, 26, 0, 0);
         pointRedisRepository.save(Point.builder()
                 .id(id)
@@ -70,7 +66,7 @@ public class RedisTest {
 
     @Test
     public void 하이퍼로그로그_테스트() {
-        RedisTemplate<String, Object> template = redisConfig.testRedisTemplate();
+        RedisTemplate<String, Object> template = redisConfig.redisTemplate();
         HyperLogLogOperations<String, Object> hyperLogLogOperations = template.opsForHyperLogLog();
 
         hyperLogLogOperations.add("HLLTEST:1010", 1);
