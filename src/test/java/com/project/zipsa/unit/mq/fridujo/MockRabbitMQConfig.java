@@ -1,8 +1,7 @@
-package com.project.zipsa.unit.mq;
+package com.project.zipsa.unit.mq.fridujo;
 
 import com.github.fridujo.rabbitmq.mock.compatibility.MockConnectionFactoryFactory;
 import com.github.fridujo.rabbitmq.mock.exchange.MockExchangeCreator;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;

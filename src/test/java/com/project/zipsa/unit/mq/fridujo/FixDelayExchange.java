@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.mq;
+package com.project.zipsa.unit.mq.fridujo;
 
 import com.github.fridujo.rabbitmq.mock.AmqArguments;
 import com.github.fridujo.rabbitmq.mock.ReceiverRegistry;

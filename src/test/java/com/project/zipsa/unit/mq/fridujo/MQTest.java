@@ -1,4 +1,4 @@
-package com.project.zipsa.unit.mq;
+package com.project.zipsa.unit.mq.fridujo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.BindingBuilder;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Import(MockRabbitMQConfig.class)
-public class MQTest02 {
+public class MQTest {
 
     private static final String QUEUE_NAME1 = UUID.randomUUID().toString();
     private static final String QUEUE_NAME2 = UUID.randomUUID().toString();
