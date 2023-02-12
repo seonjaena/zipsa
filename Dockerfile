@@ -1,12 +1,13 @@
+ARG PROFILE
+
 FROM 7.6.0-jdk11-alpine as Builder
 
 WORKDIR /build
-COPY build.gradle .
+
+COPY build.gradle gradlew ./
 COPY src ./src
 
-ARG JAR_FILE=*.jar
 ARG PROFILE
-ENV PROFILE $PROFILE
 
 COPY ${JAR_FILE} app.jar
 
