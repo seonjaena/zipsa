@@ -1,4 +1,3 @@
-
 spring:
 
   servlet:
@@ -51,9 +50,9 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: admin
-    password: Na6080su12!!
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
@@ -70,11 +69,11 @@ spring:
     open-in-view: false
 
   rabbitmq:
-    host: 144.24.83.179
-    port: 5672
-    virtualhost: /
-    username: sky114z
-    password: na6080su12!@
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    virtualhost: ${RABBITMQ_VIRTUAL_HOST}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
     dead-log-queue: dead-log-queue
     dead-log-exchange: dead-log-exchange
     dead-log-routingkey: dead-log-queue
@@ -83,22 +82,22 @@ spring:
     log-routingkey: log-queue
 
   redis:
-    host: 144.24.83.179
-    port: 6379
-    password: na6080su12!@
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
 
 cloud:
   aws:
     credentials:
-      access-key: AKIA442EBW2WH4TXKELQ
-      secret-key: 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
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
     dynamodb:
-      endpoint: https://dynamodb.ap-northeast-2.amazonaws.com
+      endpoint: ${DYNAMO_ENDPOINT}
     region:
-      static: ap-northeast-2
+      static: ${AWS_REGION}
     s3:
-      bucket: seonjaena
-      dir-prefix: dev/jwt-test
+      bucket: ${S3_BUCKET}
+      dir-prefix: ${S3_DIR_PREFIX}
     stack:
       auto: false
 
@@ -111,9 +110,9 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true
-    username: admin
-    password: Na6080su12!!
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
@@ -129,11 +128,11 @@ spring:
     open-in-view: false
 
   rabbitmq:
-    host: 144.24.83.179
-    port: 5672
-    virtualhost: /
-    username: sky114z
-    password: na6080su12!@
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    virtualhost: ${RABBITMQ_VIRTUAL_HOST}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
     dead-log-queue: dead-log-queue
     dead-log-exchange: dead-log-exchange
     dead-log-routingkey: dead-log-queue
@@ -142,18 +141,18 @@ spring:
     log-routingkey: log-queue
 
   redis:
-    host: 144.24.83.179
-    port: 6379
-    password: na6080su12!@
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
 
 cloud:
   aws:
     dynamodb:
-      endpoint: https://dynamodb.ap-northeast-2.amazonaws.com
+      endpoint: ${DYNAMO_ENDPOINT}
     region:
-      static: ap-northeast-2
+      static: ${AWS_REGION}
     s3:
-      bucket: seonjaena
-      dir-prefix: prod/jwt-test
+      bucket: ${S3_BUCKET}
+      dir-prefix: ${S3_DIR_PREFIX}
     stack:
       auto: false
