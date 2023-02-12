@@ -9,30 +9,6 @@ group = 'com.project'
 version = '1.0.0'
 sourceCompatibility = '11'
 
-distributions {
-	main {
-		distributionBaseName = "${project.name}"
-		contents {
-			from("build/libs") {
-				dirMode = 0755
-				fileMode = 0755
-			}
-			from('Dockerfile') {
-				dirMode = 0755
-				fileMode = 0755
-			}
-			from('script-file') {
-				dirMode = 0755
-				fileMode = 0755
-			}
-			distTar {
-				compression = Compression.GZIP
-				archiveExtension = "tar.gz"
-			}
-		}
-	}
-}
-
 jar {
 	enabled = false
 }

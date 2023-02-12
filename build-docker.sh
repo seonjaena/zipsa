@@ -7,19 +7,15 @@ else
   GIT_BRANCH=$(git symbolic-ref --short HEAD)
 fi
 
-REVISION=$(git rev-parse --short HEAD)
-VER=$(cat version.txt | sed 's/ //g')-$GIT_BRANCH
-BUILD=$(date +%Y%m%d%H%M)
-
-echo "REVISION=$REVISION"
-echo "VER=$VER"
-echo "BUILD=$BUILD"
-echo "GIT_BRANCH=$GIT_BRANCH"
-if [ -n "$BUILD_NUMBER" ]; then
-  echo "BUILD_NUMBER(jenkins)=$BUILD_NUMBER"
-fi
-if [ -n "$BRANCH_NAME" ]; then
-  echo "BRANCH_NAME(jenkins)=$BRANCH_NAME"
+PROFILE=""
+if [ -n "$1" ]; then
+  PROFILE=$1
+else
+  echo "PROFILE을 추가하세요."
+  exit 1
 fi
 
-docker build -t zipsa:$VER --build-arg REVISION=$REVISION --build-arg VER=$VER --build-arg BUILD=$BUILD .
+VER=$(cat version.txt | sed 's/ //g')
+TAG=$VER-$GIT_BRANCH
+
+docker build -t zipsa:$TAG --build-arg PROFILE=$PROFILE --build-arg VER=$VER .

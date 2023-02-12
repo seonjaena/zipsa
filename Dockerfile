@@ -1,23 +1,30 @@
 ARG PROFILE
+ARG VER
 
-FROM 7.6.0-jdk11-alpine as Builder
+FROM gradle:7.6.0-jdk11-alpine as Builder
 
 WORKDIR /build
 
 COPY build.gradle gradlew ./
-COPY src ./src
+COPY src/main ./src/main
 
 ARG PROFILE
+ARG VER
 
-COPY ${JAR_FILE} app.jar
+RUN gradle wrapper && \
+    ./gradlew clean build -x test -Pprofile=$PROFILE
 
-RUN mkdir -p /root/zipsa-files
+FROM eclipse-temurin:11.0.18_10-jre-alpine
 
-FROM openjdk:11.0.11-jre-slim
+ARG PROFILE
+ENV USE_PROFILE ${PROFILE}
+ARG VER
 
-COPY --from=Builder /build/zipsa /usr/local/zipsa
+WORKDIR /usr/local/zipsa
+
+COPY --from=Builder /build/build/libs/build-${VER}.jar app.jar
 
 RUN apk update && \
     apk add --update tzdata
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${USE_PROFILE}", "-jar", "app.jar"]
