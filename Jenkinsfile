@@ -9,7 +9,14 @@ pipeline {
 
         stage('Build Docker') {
             steps {
-                sh "sh ./build-docker.sh"
+                script {
+                    if(env.BRANCH_NAME == "master") {
+                        profile = "prod"
+                    }else {
+                        profile = "dev"
+                    }
+                    sh "sh ./build-docker.sh ${profile}"
+                }
             }
         }
 
@@ -28,18 +35,18 @@ pipeline {
                     //이미 생성된 이미지 찾기 위함
                     builtTag = "zipsa:${VER}"
 
-                    ecrRepositoryDev = "886516594348.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-free:${VER}"
-                    ecrRepositoryProd = "886516594348.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-free:${VER}"
+                    ecrRepositoryDev = "886516594348.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-free"
+                    ecrRepositoryProd = "886516594348.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-free"
 
                     if (env.BRANCH_NAME != "master") {
-                        sh 'aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 886516594348.dkr.ecr.ap-northeast-2.amazonaws.com'
+                        sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ecrRepositoryDev}"
                         //[참고] docker login이 동시에 여러 곳에 로그인을 해 놓아도 동작에 문제없음(지정한 repository url에 정상 업로드 함)
 
                         //태깅
-                        sh "docker tag ${builtTag} ${ecrRepositoryDev}"
+                        sh "docker tag ${builtTag} ${ecrRepositoryDev}:${VER}"
 
                         //upload
-                        sh "docker push ${ecrRepositoryDev}"
+                        sh "docker push ${ecrRepositoryDev}:${VER}"
                     }
 
                     ///////////////////////////////////////////////
@@ -47,13 +54,13 @@ pipeline {
                     ///////////////////////////////////////////////
 
                     if (env.BRANCH_NAME == "master") {
-                        sh 'aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 886516594348.dkr.ecr.ap-northeast-2.amazonaws.com'
+                        sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ecrRepositoryProd}"
 
                         //태깅
-                        sh "docker tag ${builtTag} ${ecrRepositoryProd}"
+                        sh "docker tag ${builtTag} ${ecrRepositoryProd}:${VER}"
 
                         //upload
-                        sh "docker push ${ecrRepositoryProd}"
+                        sh "docker push ${ecrRepositoryProd}:${VER}"
                     }
                 }
             }
