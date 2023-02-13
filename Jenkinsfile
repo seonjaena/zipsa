@@ -1,7 +1,15 @@
 pipeline {
     agent any
 
+    tools {
+        gradle 'gradle7.6'
+    }
+
     stages {
+
+        stage('Build') {
+            ./gradlew clean build -x test -Pprofile=dev
+        }
 
         stage('Build Docker') {
             steps {
