@@ -8,6 +8,7 @@ pipeline {
     stages {
 
         stage('Build') {
+            gradle wrapper
             ./gradlew clean build -x test -Pprofile=dev
         }
 
