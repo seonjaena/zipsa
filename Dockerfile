@@ -2,7 +2,7 @@ ARG PROFILE
 ARG VER
 ARG HOME
 
-FROM gradle:7.6.0-jdk11-alpine as Builder
+FROM gradle:7.4.1-jdk11-alpine as Builder
 
 WORKDIR /build
 
