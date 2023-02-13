@@ -18,4 +18,4 @@ fi
 VER=$(cat version.txt | sed 's/ //g')
 TAG=$VER-$GIT_BRANCH
 
-docker build -t zipsa:$TAG --build-arg PROFILE=$PROFILE --build-arg VER=$VER .
+DOCKER_BUILDKIT=1 docker build -t zipsa:$TAG --build-arg PROFILE=$PROFILE --build-arg VER=$VER --build-arg HOME=$HOME .

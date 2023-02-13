@@ -1,5 +1,6 @@
 ARG PROFILE
 ARG VER
+ARG HOME
 
 FROM gradle:7.6.0-jdk11-alpine as Builder
 
@@ -11,8 +12,7 @@ COPY src/main ./src/main
 ARG PROFILE
 ARG VER
 
-RUN gradle wrapper && \
-    ./gradlew clean build -x test -Pprofile=$PROFILE
+RUN --mount=type=cache,target=${HOME}/.gradle ./gradlew clean build -x test -Pprofile=$PROFILE
 
 FROM eclipse-temurin:11.0.18_10-jre-alpine
 
