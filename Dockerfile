@@ -12,8 +12,10 @@ COPY src/main ./src/main
 ARG PROFILE
 ARG VER
 
-RUN gradle wrapper && \
-    ./gradlew clean build -x test -Pprofile=$PROFILE
+# RUN gradle wrapper && \
+#     ./gradlew clean build -x test -Pprofile=$PROFILE
+
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build -x test -Pprofile=$PROFILE
 
 FROM eclipse-temurin:11.0.18_10-jre-alpine
 
