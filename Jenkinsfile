@@ -10,7 +10,9 @@ pipeline {
         stage('Build') {
             steps {
                 // gradle wrapper
+                sh """
                 ./gradlew clean build -x test -Pprofile=dev
+                """
             }
         }
 
