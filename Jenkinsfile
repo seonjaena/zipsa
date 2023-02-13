@@ -8,8 +8,10 @@ pipeline {
     stages {
 
         stage('Build') {
-            gradle wrapper
-            ./gradlew clean build -x test -Pprofile=dev
+            steps {
+                // gradle wrapper
+                ./gradlew clean build -x test -Pprofile=dev
+            }
         }
 
         stage('Build Docker') {
