@@ -13,7 +13,7 @@ ARG PROFILE
 ARG VER
 
 RUN gradle wrapper && \
-    --mount=type=cache,target=/root/.gradle ./gradlew clean build -x test -Pprofile=$PROFILE
+    --mount=type=cache,mode=0777,target=/root/.gradle ./gradlew clean build -x test -Pprofile=$PROFILE
 
 FROM eclipse-temurin:11.0.18_10-jre-alpine
 
