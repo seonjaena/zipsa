@@ -1,19 +1,7 @@
 pipeline {
     agent any
 
-    // tools {
-    //     gradle 'gradle7.6'
-    // }
-
     stages {
-
-        // stage('Build') {
-        //     steps {
-        //         sh """
-        //         ./gradlew clean build -x test -Pprofile=dev
-        //         """
-        //     }
-        // }
 
         stage('Build Docker') {
             steps {

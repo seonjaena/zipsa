@@ -1,4 +1,3 @@
-# syntax = docker/dockerfile:experimental
 ARG PROFILE
 ARG VER
 ARG HOME
