@@ -15,7 +15,7 @@ pipeline {
                     }else {
                         profile = "dev"
                     }
-                    sh "sh ./build-docker.sh ${profile}"
+                    sh "./build-docker.sh ${profile}"
                 }
             }
         }
