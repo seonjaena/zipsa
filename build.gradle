@@ -64,7 +64,6 @@ dependencies {
 	implementation 'org.springframework.amqp:spring-rabbit-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	// https://mvnrepository.com/artifact/com.amazonaws/DynamoDBLocal
-
 }
 
 tasks.named('test') {
