@@ -9,7 +9,7 @@ pipeline {
                     if(env.BRANCH_NAME == "master") {
                         profile = "prod"
                     }else {
-                        profile = "dev"
+                        profile = "prod"
                     }
                     sh "./build-docker.sh ${profile}"
                 }
