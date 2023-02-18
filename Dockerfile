@@ -26,6 +26,7 @@ WORKDIR /usr/local/zipsa
 COPY --from=Builder /build/build/libs/zipsa-${VER}.jar zipsa.jar
 
 RUN apk update && \
-    apk add --update tzdata
+    apk add --update tzdata && \
+    apk add curl
 
 ENTRYPOINT ["java", "-Dspring.profiles.active=${USE_PROFILE}", "-jar", "zipsa.jar"]
