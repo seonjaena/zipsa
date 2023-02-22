@@ -21,7 +21,7 @@ function check_proc() {
     echo "COMMAND = $COMMAND"
     echo "ARGS = $ARGS"
 
-    if [ -z "$USERNAME" ]  [ -z "$GROUPNAME" ]  [ -z "$PID" ]  [ -z "$STATUS" ]  [ -z "$COMMAND" ] || [ -z "$ARGS" ]; then
+    if [ -z "$USERNAME" ] || [ -z "$GROUPNAME" ] || [ -z "$PID" ] || [ -z "$STATUS" ] || [ -z "$COMMAND" ] || [ -z "$ARGS" ]; then
       echo "Process is Abnormal"
       exit 1
     fi
@@ -33,4 +33,9 @@ function check_proc() {
     fi
 }
 
+function check_api() {
+  curl -H 'Authorization: Bearer' http://localhost:8080/api/healthcheck/task
+}
+
 check_proc
+check_api

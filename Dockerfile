@@ -24,6 +24,7 @@ ARG VER
 WORKDIR /usr/local/zipsa
 
 COPY --from=Builder /build/build/libs/zipsa-${VER}.jar zipsa.jar
+COPY ecs-health-check.sh ./
 
 RUN apk update && \
     apk add --update tzdata && \
