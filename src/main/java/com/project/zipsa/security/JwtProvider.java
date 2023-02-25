@@ -81,7 +81,7 @@ public class JwtProvider {
         String authorization = request.getHeader(authorizationHeader);
         log.info("[ AUTH ==> {} ]", authorization);
         if( !(request.getRequestURI().equals(ALB_HEALTHCHECK_PATH) || request.getRequestURI().startsWith(ACTUATOR_PATH)) ) {
-            if (StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
+            if(StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
                 return authorization.substring(bearerPrefix.length());
             }
         }
