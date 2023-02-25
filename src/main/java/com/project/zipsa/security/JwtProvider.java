@@ -25,7 +25,7 @@ import java.util.List;
 public class JwtProvider {
 
     private static final String ALB_HEALTHCHECK_PATH = "/api/healthcheck/alb";
-    private static final String PROMETHEUS_PATH = "/actuator/prometheus";
+    private static final String ACTUATOR_PATH = "/actuator";
 
     private String secretKey = "secret";
     @Value("${token.access-expire}")
@@ -80,7 +80,7 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         String authorization = request.getHeader(authorizationHeader);
         log.info("[ AUTH ==> {} ]", authorization);
-        if(!(request.getRequestURI().equals(ALB_HEALTHCHECK_PATH) || request.getRequestURI().equals(PROMETHEUS_PATH))) {
+        if( !(request.getRequestURI().equals(ALB_HEALTHCHECK_PATH) || request.getRequestURI().startsWith(ACTUATOR_PATH)) ) {
             if (StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
                 return authorization.substring(bearerPrefix.length());
             }

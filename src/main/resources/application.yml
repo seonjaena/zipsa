@@ -37,6 +37,8 @@ token:
   refresh-expire: 1440000
 
 management:
+  server:
+    port: 8082
   endpoints:
     web:
       exposure:
@@ -50,9 +52,9 @@ spring:
       on-profile: dev
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:mariadb://mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com:3306/ZIPSA_DEV?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useUnicode=true}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:Na6080su12!!}
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
@@ -69,11 +71,11 @@ spring:
     open-in-view: false
 
   rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    virtualhost: ${RABBITMQ_VIRTUAL_HOST}
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
+    host: ${RABBITMQ_HOST:144.24.83.179}
+    port: ${RABBITMQ_PORT:5672'}
+    virtualhost: ${RABBITMQ_VIRTUAL_HOST:/}
+    username: ${RABBITMQ_USERNAME:sky114z}
+    password: ${RABBITMQ_PASSWORD:na6080su12!@}
     dead-log-queue: dead-log-queue
     dead-log-exchange: dead-log-exchange
     dead-log-routingkey: dead-log-queue
@@ -82,9 +84,9 @@ spring:
     log-routingkey: log-queue
 
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
+    host: ${REDIS_HOST:144.24.83.179}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:na6080su12!@}
 
 cloud:
   aws:
