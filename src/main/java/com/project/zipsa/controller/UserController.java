@@ -8,9 +8,11 @@ import com.project.zipsa.dto.enums.GENERAL_SUCCESS_DETAIL;
 import com.project.zipsa.dto.enums.PHONE_CHECK_TYPE;
 import com.project.zipsa.dto.user.*;
 import com.project.zipsa.service.UserService;
+import com.project.zipsa.validate.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +30,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/login")
-    public GeneralResponseDto<GENERAL_STATUS_ENUM, ResponseLoginDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public GeneralResponseDto<GENERAL_STATUS_ENUM, ResponseLoginDto> login(@RequestBody @Validated(ValidationSequence.class) LoginRequestDto loginRequestDto) {
         return new GeneralResponseDto<>(GENERAL_STATUS_ENUM.SUCCESS, userService.login(loginRequestDto.getUserId(), loginRequestDto.getUserPw()));
     }
 
