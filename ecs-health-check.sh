@@ -13,35 +13,29 @@ function check_proc() {
     STATUS=`echo $PS_STAT | cut -d' ' -f1` && PS_STAT=`echo $PS_STAT | sed s/"$STATUS"//`
     COMMAND=`echo $PS_STAT | cut -d' ' -f1` && PS_STAT=`echo $PS_STAT | sed s/"$COMMAND"//`
     ARGS=$PS_STAT
-}
 
-function check_prop() {
-    if [[ -z "$DB_HOST" ]]; then
-        DB_HOST=mariadb-ver10-01.c3edzk8fothj.ap-northeast-2.rds.amazonaws.com
+    echo "USERNAME = $USERNAME"
+    echo "GROUPNAME = $GROUPNAME"
+    echo "PID = $PID"
+    echo "STATUS = $STATUS"
+    echo "COMMAND = $COMMAND"
+    echo "ARGS = $ARGS"
+
+    if [ -z "$USERNAME" ] || [ -z "$GROUPNAME" ] || [ -z "$PID" ] || [ -z "$STATUS" ] || [ -z "$COMMAND" ] || [ -z "$ARGS" ]; then
+      echo "Process is Abnormal"
+      exit 1
     fi
-    if [[ -z "$MQ_HOST" ]]; then
-        MQ_HOST=144.24.83.179
-    fi
-    if [[ -z "$REDIS_HOST" ]]; then
-        REDIS_HOST=144.24.83.179
-    fi
-    if [[ -z "$DB_PORT" ]]; then
-        DB_PORT=1433
-    fi
-    if [[ -z "$MQ_PORT" ]]; then
-        MQ_PORT=5672
-    fi
-    if [[ -z "$REDIS_PORT" ]]; then
-        REDIS_PORT=6379
+
+    if [ "$STATUS" != "D" ] && [ "$STATUS" = "S" ] && [ "$STATUS" = "R" ]; then
+      echo "Process Status is Abnormal"
+      echo "PROCESS STATUS = $STATUS"
+      exit 1
     fi
 }
 
-function thrid_party_conn_test() {
-    nc -vz $DB_HOST $DB_PORT && \
-    nc -vz $MQ_HOST $MQ_PORT && \
-    nc -vz $REDIS_HOST $REDIS_PORT
+function check_api() {
+  curl -H 'Authorization: Bearer' http://localhost:8080/api/healthcheck/task
 }
 
 check_proc
-check_prop
-thrid_party_conn_test
+check_api

@@ -32,12 +32,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-json'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.8'
-//	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.apache.commons:commons-lang3'
-	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.6.0'
 	implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.4.0'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -48,7 +48,6 @@ dependencies {
 	implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.11.1'
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
-	// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
 	implementation 'com.google.firebase:firebase-admin:9.0.0'
 	implementation 'com.amazonaws:DynamoDBLocal:1.11.119'
 	implementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
