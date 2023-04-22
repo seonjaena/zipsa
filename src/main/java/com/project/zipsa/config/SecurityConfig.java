@@ -9,13 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.ldap.LdapBindAuthenticationManagerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,8 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -40,33 +35,37 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                .csrf().disable()
+        http.cors().configurationSource(corsConfigurationSource());
+
+        http.csrf()
+                .disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/user").hasRole("USER")
-                .antMatchers(HttpMethod.PATCH, "/api/user/alert", "/api/user/nickname", "/api/user/phone", "/api/user/birth", "/api/user/profile", "/api/user/id").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/api/user").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/api/room", "/api/room/{roomIdx:[\\d+]}").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/api/building").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/api/building").hasRole("USER")
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeRequests()
+                .antMatchers("/exception/entryPoint", "/exception/accessDenied").permitAll()
+                .antMatchers("/api/healthcheck/alb", "/api/healthcheck/task").permitAll()
+                .antMatchers("/actuator/prometheus").permitAll()
+                .antMatchers("/test/test").permitAll()
+                .antMatchers("/api/user/login", "/api/user/accessToken", "/api/user/check/**", "/api/user/join", "/api/user/find/**").permitAll()
+                .antMatchers("/api/user/pw_unlogined", "/api/user/pw_logined").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/phone").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user/phone").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .and()
-                .exceptionHandling()
+                .anyRequest().authenticated();
+
+        http.formLogin().disable()
+                .httpBasic().disable();
+
+        http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .accessDeniedHandler(accessDeniedHandler);
+
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
 
