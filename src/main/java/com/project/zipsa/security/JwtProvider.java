@@ -2,6 +2,7 @@ package com.project.zipsa.security;
 
 import com.project.zipsa.dto.auth.TokenDto;
 import com.project.zipsa.exception.custom.UnAuthenticatedException;
+import com.project.zipsa.exception.custom.UnAuthorizedException;
 import com.project.zipsa.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -15,27 +16,32 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
 @Slf4j
 public class JwtProvider {
 
-    private static final String ALB_HEALTHCHECK_PATH = "/api/healthcheck/alb";
-    private static final String ACTUATOR_PATH = "/actuator";
+    private static final Set<String> NO_JWT_AUTH_PATH;
 
-    private String secretKey = "secret";
+    static {
+        NO_JWT_AUTH_PATH = new HashSet<>(Arrays.asList(
+                "/api/healthcheck/alb",
+                "/actuator"
+        ));
+    }
+
+    @Value("${key.jwt.secret}")
+    private String secretKey;
     @Value("${token.access-expire}")
     private Long accessTokenValidMillisecond;
     @Value("${token.refresh-expire}")
     private Long refreshTokenValidMillisecond;
     private final CustomUserDetailsService userDetailsService;
     private final String ROLES = "roles";
-    private final String authorizationHeader = "Authorization";
-    private final String bearerPrefix = "Bearer ";
+    private final String AUTHORIZATION_HEADER = "Authorization";
+    private final String BEARER_PREFIX = "Bearer ";
 
     @PostConstruct
     protected void init() {
@@ -51,7 +57,7 @@ public class JwtProvider {
         String refreshToken = createRefreshToken(claims);
 
         return TokenDto.builder()
-                .grantType(bearerPrefix)
+                .grantType(BEARER_PREFIX)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .accessTokenExpireDate(accessTokenValidMillisecond)
@@ -78,14 +84,20 @@ public class JwtProvider {
 
     // HTTP Request의 Header에서 Token Parsing
     public String resolveToken(HttpServletRequest request) {
-        String authorization = request.getHeader(authorizationHeader);
-        log.info("[ AUTH ==> {} ]", authorization);
-        if( !(request.getRequestURI().equals(ALB_HEALTHCHECK_PATH) || request.getRequestURI().startsWith(ACTUATOR_PATH)) ) {
-            if(StringUtils.hasText(bearerPrefix) && authorization.startsWith(bearerPrefix)) {
-                return authorization.substring(bearerPrefix.length());
-            }
+
+        if(NO_JWT_AUTH_PATH.contains(request.getRequestURI())) {
+            return null;
         }
-        return null;
+
+        String authorization = request.getHeader(AUTHORIZATION_HEADER);
+        log.info("[ AUTH ==> {} ]", authorization);
+
+        if(StringUtils.hasText(authorization) && StringUtils.hasText(BEARER_PREFIX) && authorization.startsWith(BEARER_PREFIX)) {
+            return authorization.substring(BEARER_PREFIX.length());
+        }else {
+            throw new UnAuthorizedException("접근 권한이 없습니다.");
+        }
+
     }
 
     // JWT의 유효성 및 만료일자 확인

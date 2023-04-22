@@ -145,6 +145,10 @@ spring:
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
 
+key:
+  jwt:
+    secret: B?E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7x!A%D*G-KaPdSgVkYp3s6v
+
 cloud:
   aws:
     dynamodb:
