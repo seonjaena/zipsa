@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name = "DEV_STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight([%-5level]) %cyan([%thread]) %X{client-ip} - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name = "PROD_STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] %X{client-ip} - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name = "org.springframework" level = "info" />
+    <logger name = "org.hibernate" level = "info" />
+
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="DEV_STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="DEBUG">
+            <appender-ref ref="PROD_STDOUT"/>
+        </root>
+    </springProfile>
+
+</configuration>

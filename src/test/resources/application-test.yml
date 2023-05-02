@@ -1,0 +1,75 @@
+spring:
+
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+    open-in-view: false
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtualhost: /
+    username: sky114z
+    password: na6080su12!@
+    dead-log-queue: dead-log-queue
+    dead-log-exchange: dead-log-exchange
+    dead-log-routingkey: dead-log-queue
+    log-queue: log-queue
+    log-exchange: log-exchange
+    log-routingkey: log-queue
+
+  redis:
+    host: localhost
+    port: 6379
+
+cloud:
+  aws:
+    dynamodb:
+      endpoint: http://localhost:8000
+      region: ap-northeast-2
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: seonjaena
+      dir-prefix: prod/jwt-test
+    stack:
+      auto: false
+
+local:
+  win:
+    dir-prefix: C:/Users/sky11/zipsa-files
+  linux:
+    dir-prefix: /root/zipsa-files
+  mac:
+    dir-prefix: /Users/naseonjae/zipsa-files
+
+
+token:
+  # 5분 (1000 * 60 * 5 = 300000) / 30분 (1000 * 60 * 30 = 1800000) / 1시간 (1000 * 60 * 60 = 3600000)
+  access-expire: 1800000
+  # 1일 (1000 * 60 * 24 = 1440000) / 1달 (1000 * 60 * 24 * 31 = 44640000)
+  refresh-expire: 1440000
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+  config: classpath:logback-spring.xml
