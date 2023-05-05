@@ -42,6 +42,11 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
 ---
 
 spring:
@@ -160,3 +165,8 @@ cloud:
       dir-prefix: ${S3_DIR_PREFIX}
     stack:
       auto: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

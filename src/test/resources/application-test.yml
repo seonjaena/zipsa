@@ -12,7 +12,7 @@ spring:
     database: h2
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -73,3 +73,8 @@ logging:
         util:
           EC2MetadataUtils: error
   config: classpath:logback-spring.xml
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

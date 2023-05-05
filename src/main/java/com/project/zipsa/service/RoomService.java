@@ -6,6 +6,7 @@ import com.project.zipsa.entity.Room;
 import com.project.zipsa.entity.Users;
 import com.project.zipsa.exception.custom.NoSuchRoomException;
 import com.project.zipsa.repository.RoomRepository;
+import com.project.zipsa.repository.dsl.RoomDslRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -25,12 +26,13 @@ public class RoomService {
 
     private final UserService userService;
     private final RoomRepository roomRepository;
+    private final RoomDslRepository roomDslRepository;
     private final MessageSource messageSource;
 
     public List<RoomInfoResponseDto> getRoomInfos(String userId) {
         Users user = userService.getUserNotDeleted(userId);
-        List<Room> rentList = roomRepository.findAllByTenant(user);
-        List<Room> ownList = roomRepository.findAllByBuildingMaster(userId);
+        List<Room> rentList = roomDslRepository.findAllByTenant(user);
+        List<Room> ownList = roomDslRepository.findAllByBuildingMaster(userId);
 
         List<RoomInfoResponseDto> rentDtoList = rentList.stream().map(r ->
                 new RoomInfoResponseDto(r.getRoomIdx(), false, r.getBuilding().getBuildingName(), r.getRoomNumber(),
