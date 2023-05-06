@@ -31,8 +31,8 @@ public class RoomService {
 
     public List<RoomInfoResponseDto> getRoomInfos(String userId) {
         Users user = userService.getUserNotDeleted(userId);
-        List<Room> rentList = roomDslRepository.findAllByTenant(user);
-        List<Room> ownList = roomDslRepository.findAllByBuildingMaster(userId);
+        List<Room> rentList = roomDslRepository.findBuildingAndRoomByTenant(user);
+        List<Room> ownList = roomDslRepository.findBuildingAndRoomByBuildingMaster(userId);
 
         List<RoomInfoResponseDto> rentDtoList = rentList.stream().map(r ->
                 new RoomInfoResponseDto(r.getRoomIdx(), false, r.getBuilding().getBuildingName(), r.getRoomNumber(),

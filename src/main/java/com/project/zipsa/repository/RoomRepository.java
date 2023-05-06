@@ -11,16 +11,16 @@ import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    @Query("SELECT r FROM Room r " +
-            "JOIN FETCH r.building b " +
-            "WHERE r.tenant = :user")
-    List<Room> findAllByTenant(Users user);
-
-    @Query("SELECT r FROM Room r " +
-            "JOIN FETCH r.building b " +
-            "JOIN b.buildingMaster m " +
-            "WHERE m.userId = :userId")
-    List<Room> findAllByBuildingMaster(@Param(value = "userId") String userId);
+//    @Query("SELECT r FROM Room r " +
+//            "JOIN FETCH r.building b " +
+//            "WHERE r.tenant = :user")
+//    List<Room> findAllByTenant(Users user);
+//
+//    @Query("SELECT r FROM Room r " +
+//            "JOIN FETCH r.building b " +
+//            "JOIN b.buildingMaster m " +
+//            "WHERE m.userId = :userId")
+//    List<Room> findAllByBuildingMaster(@Param(value = "userId") String userId);
 
     Optional<Room> findByRoomIdx(Long roomIdx);
 

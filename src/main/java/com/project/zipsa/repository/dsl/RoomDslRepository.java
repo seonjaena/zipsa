@@ -15,7 +15,7 @@ import static com.project.zipsa.entity.QUsers.*;
 public class RoomDslRepository {
 
     private final JPAQueryFactory query;
-    public List<Room> findAllByTenant(Users user) {
+    public List<Room> findBuildingAndRoomByTenant(Users user) {
         return query
                 .select(room)
                 .from(room)
@@ -25,9 +25,10 @@ public class RoomDslRepository {
                 .fetch();
     }
 
-    public List<Room> findAllByBuildingMaster(String userId) {
+    public List<Room> findBuildingAndRoomByBuildingMaster(String userId) {
         return query
                 .select(room)
+                .from(room)
                 .leftJoin(room.building, building)
                 .fetchJoin()
                 .leftJoin(building.buildingMaster, users)
