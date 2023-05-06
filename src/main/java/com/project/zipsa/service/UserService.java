@@ -12,7 +12,7 @@ import com.project.zipsa.entity.enums.USER_ROLE;
 import com.project.zipsa.entity.enums.USER_STATUS;
 import com.project.zipsa.exception.custom.*;
 import com.project.zipsa.repository.CheckCodeRepository;
-import com.project.zipsa.repository.TokenRepository;
+import com.project.zipsa.repository.dynamodb.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
 import com.project.zipsa.util.FileUtil;
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

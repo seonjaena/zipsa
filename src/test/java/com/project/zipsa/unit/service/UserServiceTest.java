@@ -5,7 +5,7 @@ import com.project.zipsa.dto.auth.TokenDto;
 import com.project.zipsa.entity.Users;
 import com.project.zipsa.entity.enums.USER_ROLE;
 import com.project.zipsa.entity.enums.USER_STATUS;
-import com.project.zipsa.repository.TokenRepository;
+import com.project.zipsa.repository.dynamodb.TokenRepository;
 import com.project.zipsa.repository.UserRepository;
 import com.project.zipsa.security.JwtProvider;
 import com.project.zipsa.service.UserService;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;

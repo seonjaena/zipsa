@@ -1,4 +1,4 @@
-package com.project.zipsa.repository;
+package com.project.zipsa.repository.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
