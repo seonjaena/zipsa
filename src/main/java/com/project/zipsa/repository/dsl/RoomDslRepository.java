@@ -19,7 +19,7 @@ public class RoomDslRepository {
         return query
                 .select(room)
                 .from(room)
-                .leftJoin(room.building, building)
+                .leftJoin(room.building)
                 .fetchJoin()
                 .where(room.tenant.eq(user))
                 .fetch();
@@ -29,9 +29,9 @@ public class RoomDslRepository {
         return query
                 .select(room)
                 .from(room)
-                .leftJoin(room.building, building)
+                .leftJoin(room.building)
                 .fetchJoin()
-                .leftJoin(building.buildingMaster, users)
+                .leftJoin(building.buildingMaster)
                 .where(users.userId.eq(userId))
                 .fetch();
     }
