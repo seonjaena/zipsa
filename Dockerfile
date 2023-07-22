@@ -1,33 +1,29 @@
-ARG PROFILE
-ARG VER
-ARG HOME
-
 FROM gradle:7.4.1-jdk11-alpine as Builder
 
 WORKDIR /build
+
+ARG HOME
 
 COPY *.gradle gradle.* gradlew ./
 COPY gradle ./gradle
 COPY src/main ./src/main
 
-ARG PROFILE
-ARG VER
+RUN --mount=type=cache,target=${HOME}/.gradle ./gradlew clean build -x test && \
+    mv build/libs/zipsa-*.jar zipsa.jar
 
-RUN --mount=type=cache,target=${HOME}/.gradle ./gradlew clean build -x test -Pprofile=${PROFILE}
+#FROM eclipse-temurin:11.0.18_10-jre-alpine
+FROM amazoncorretto:11-alpine3.18
 
-FROM eclipse-temurin:11.0.18_10-jre-alpine
-
-ARG PROFILE
-ENV USE_PROFILE ${PROFILE}
-ARG VER
+ENV TZ=Asia/Seoul
 
 WORKDIR /usr/local/zipsa
 
-COPY --from=Builder /build/build/libs/zipsa-${VER}.jar zipsa.jar
+COPY --from=Builder /build/zipsa.jar zipsa.jar
 COPY ecs-health-check.sh ./
 
-RUN apk update && \
-    apk add --update tzdata && \
-    apk add curl
+RUN apk --no-cache add curl && \
+    apk --no-cache add tzdata && \
+    echo $TZ > /etc/timezone && \
+    apk del tzdata
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${USE_PROFILE}", "-jar", "zipsa.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "zipsa.jar"]

@@ -170,3 +170,68 @@ decorator:
   datasource:
     p6spy:
       enable-logging: false
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO:validate}
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        default_batch_fetch_size: ${JPA_BATCH_FETCH_SIZE:100}
+        show_sql: ${SHOW_SQL:true}
+    open-in-view: false
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    virtualhost: ${RABBITMQ_VIRTUAL_HOST}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    dead-log-queue: ${DEAD_LOG_QUEUE:dead-log-queue}
+    dead-log-exchange: ${DEAD_LOG_EXCHANGE:dead-log-exchange}
+    dead-log-routingkey: ${DEAD_LOG_ROUTINGKEY:dead-log-queue}
+    log-queue: ${LOG_QUEUE:log-queue}
+    log-exchange: ${LOG_EXCHANGE:log-exchange}
+    log-routingkey: ${LOG_ROUTINGKEY:log-queue}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+
+key:
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+
+cloud:
+  aws:
+    dynamodb:
+      endpoint: ${DYNAMO_ENDPOINT}
+    region:
+      static: ${AWS_REGION}
+    s3:
+      bucket: ${S3_BUCKET}
+      dir-prefix: ${S3_DIR_PREFIX}
+    stack:
+      auto: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: ${P6SPY_LOGGING:false}

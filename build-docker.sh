@@ -7,15 +7,7 @@ else
   GIT_BRANCH=$(git symbolic-ref --short HEAD)
 fi
 
-PROFILE=""
-if [ -n "$1" ]; then
-  PROFILE=$1
-else
-  echo "PROFILE을 추가하세요."
-  exit 1
-fi
+PROJECT_NAME=$(./gradlew properties | grep -Po '(?<=name: ).*')
+PROJECT_VER=$(./gradlew properties | grep -Po '(?<=version: ).*')
 
-VER=$(cat version.txt | sed 's/ //g')
-TAG=$VER-$GIT_BRANCH
-
-DOCKER_BUILDKIT=1 docker build -t zipsa:$TAG --build-arg PROFILE=$PROFILE --build-arg VER=$VER --build-arg HOME=$HOME .
+DOCKER_BUILDKIT=1 docker build -t $PROJECT_NAME:$PROJECT_VER-$GIT_BRANCH  --build-arg HOME=$HOME .
